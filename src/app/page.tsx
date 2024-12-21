@@ -4,7 +4,6 @@ import { useCounterStore } from '@/store/counter'
 
 function Home() {
   const { count, increase, reset } = useCounterStore()
-
   return (
     <div className="text-primary">
       <h1>Count: {count}</h1>

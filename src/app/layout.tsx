@@ -2,6 +2,7 @@ import '@/styles/global.scss'
 import type { Metadata } from 'next'
 import ReactQueryProvider from '@/lib/providers/ReactQueryProvider'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ReactQueryProvider>
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdRegistry>
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          </AntdRegistry>
         </ReactQueryProvider>
       </body>
     </html>

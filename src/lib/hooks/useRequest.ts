@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { AxiosError, AxiosRequestConfig } from 'axios'
 
 interface UseRequestOptions<TData, TVariables> {
