@@ -1,7 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, PersistOptions } from 'zustand/middleware'
 
 interface CounterState {
   count: number
@@ -12,8 +12,10 @@ interface CounterAction {
   reset: (value: number) => void
 }
 
-export const useCounterStore = create<CounterState & CounterAction>(
-  persist(
+type CounterPersist = CounterState & CounterAction
+
+export const useCounterStore = create<CounterPersist>()(
+  persist<CounterPersist>(
     (set) => ({
       // States
       count: 0,
@@ -23,6 +25,6 @@ export const useCounterStore = create<CounterState & CounterAction>(
     }),
     {
       name: 'counter'
-    }
+    } as PersistOptions<CounterPersist>
   )
 )

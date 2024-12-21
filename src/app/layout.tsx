@@ -1,5 +1,6 @@
 import '@/styles/global.scss'
 import type { Metadata } from 'next'
+import ReactQueryProvider from '@/lib/providers/ReactQueryProvider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   )
 }
