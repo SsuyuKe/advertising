@@ -20,8 +20,10 @@
     "*.{js,jsx,ts,tsx}": "npm run lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.2",
     "@tanstack/react-query": "^5.62.8",
     "@tanstack/react-query-devtools": "^5.62.8",
+    "antd": "^5.22.5",
     "axios": "^1.7.9",
     "next": "15.1.1",
     "react": "^19.0.0",

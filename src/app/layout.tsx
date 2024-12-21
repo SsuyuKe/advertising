@@ -1,6 +1,7 @@
 import '@/styles/global.scss'
 import type { Metadata } from 'next'
 import ReactQueryProvider from '@/lib/providers/ReactQueryProvider'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <AntdRegistry>{children}</AntdRegistry>
+        </ReactQueryProvider>
       </body>
     </html>
   )
