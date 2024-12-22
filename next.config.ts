@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     config.plugins.push(
       AutoImport({
         imports: ['react'],
+        eslintrc: {
+          enabled: true,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true
+        },
         dts: './auto-imports.d.ts'
       })
     )

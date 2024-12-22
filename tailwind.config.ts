@@ -8,10 +8,28 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: 'var(--primary-color)'
+      /* width / height / padding / margin / top / bottom / right / left */
+      spacing: {
+        '1px': 'var(--spacing-1)',
+        '2px': 'var(--spacing-2)',
+        '3px': 'var(--spacing-3)',
+        '6px': 'var(--spacing-6)',
+        '10px': 'var(--spacing-10)'
       },
-      backgroundImage: {},
+      colors: {
+        primary: 'var(--primary-color)',
+        title: 'var(--title-color)',
+        disabled: 'var(--disabled-color)',
+        'dropdown-border': 'var(--dropdown-border)',
+        'navbar-active': 'var(--navbar-active)'
+      },
+      backgroundImage: {
+        logo: "url('/images/logo.png')",
+        user: "url('/icons/user.svg')"
+      },
+      borderRadius: {
+        '10px': 'var(--spacing-10)'
+      },
       borderWidth: {},
       boxShadow: {},
       fontSize: {
@@ -53,14 +71,14 @@ export default {
       container: {
         center: true,
         padding: {
-          DEFAULT: '16px',
-          md: '20px'
+          DEFAULT: '16px'
+          // md: '20px'
         },
         screens: {
-          sm: '320px', // 手機屏幕
-          md: '768px', // 平板屏幕
-          lg: '1024px', // 桌面屏幕
-          xl: '1280px' // 更大屏幕
+          // sm: '320px', // 手機屏幕
+          // md: '768px', // 平板屏幕
+          // lg: '1024px', // 桌面屏幕
+          // xl: '1280px' // 更大屏幕
         }
       },
       zIndex: {

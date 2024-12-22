@@ -1,8 +1,8 @@
 import '@/styles/global.scss'
 import type { Metadata } from 'next'
-import ReactQueryProvider from '@/lib/providers/ReactQueryProvider'
-import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { Suspense } from 'react'
+import ClientProviders from '@/lib/providers/ClientProviders'
+import Header from '@/components/Header'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,11 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ReactQueryProvider>
-          <AntdRegistry>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-          </AntdRegistry>
-        </ReactQueryProvider>
+        <ClientProviders>
+          <div className="w-full h-full flex flex-col min-h-screen bg-[#E6E8F5]">
+            <Header />
+            <main className="flex-1">
+              <div className="container">
+                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              </div>
+            </main>
+          </div>
+        </ClientProviders>
       </body>
     </html>
   )
