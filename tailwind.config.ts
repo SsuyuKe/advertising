@@ -14,24 +14,42 @@ export default {
         '2px': 'var(--spacing-2)',
         '3px': 'var(--spacing-3)',
         '6px': 'var(--spacing-6)',
-        '10px': 'var(--spacing-10)'
+        '10px': 'var(--spacing-10)',
+        '14px': 'var(--spacing-14)',
+        '18px': 'var(--spacing-18)'
       },
       colors: {
         primary: 'var(--primary-color)',
         title: 'var(--title-color)',
+        link: 'var(--link-color)',
+        'home-title': 'var(--home-title-color)',
         disabled: 'var(--disabled-color)',
         'dropdown-border': 'var(--dropdown-border)',
-        'navbar-active': 'var(--navbar-active)'
+        'navbar-active': 'var(--navbar-active)',
+        advanced: 'var(--advanced-btn)',
+        placeholder: 'var(--placeholder-color)',
+        input: 'var(--input-color)',
+        purple: {
+          100: 'var(--purple-100)',
+          200: 'var(--purple-200)'
+        }
       },
       backgroundImage: {
         logo: "url('/images/logo.png')",
-        user: "url('/icons/user.svg')"
+        user: "url('/icons/user.svg')",
+        'taiwan-map': "url('/images/taiwan_map.png')"
       },
       borderRadius: {
-        '10px': 'var(--spacing-10)'
+        '6px': 'var(--spacing-6)',
+        '10px': 'var(--spacing-10)',
+        '20px': 'var(--spacing-20)',
+        '40px': 'var(--spacing-40)'
       },
       borderWidth: {},
-      boxShadow: {},
+      boxShadow: {
+        primary: '0 4px 4px 0 rgba(93,28,139,0.25)',
+        'button-primary': '0 4px 4px 0 rgba(0, 0, 0, 0.25)'
+      },
       fontSize: {
         xxs: ['10px', '12px'], // 超小字體
         xs: ['12px', '16px'], // 小字體

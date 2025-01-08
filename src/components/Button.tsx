@@ -1,7 +1,6 @@
 import clsx from 'clsx'
-import { PropsWithChildren } from 'react'
 
-interface Props extends PropsWithChildren {
+interface Props extends React.PropsWithChildren {
   className?: string
   disabled?: boolean
   type?: 'primary' | 'dark' | 'disabled'

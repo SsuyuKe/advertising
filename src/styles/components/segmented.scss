@@ -1,0 +1,18 @@
+
+.ant-segmented .ant-segmented-item {
+  &::after {
+    background: transparent !important;
+  }
+}
+
+.login.ant-segmented {
+  .ant-segmented-item-selected .ant-segmented-item-label {
+    color: var(--purple-200);
+  }
+  .ant-segmented-item-label {
+    padding: 0 38px;
+  }
+  .ant-segmented-item:hover {
+    color: var(--title-color) !important;
+  }
+}

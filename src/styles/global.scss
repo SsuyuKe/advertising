@@ -15,19 +15,34 @@ html, body {
   scroll-behavior: smooth;
 }
 
+body {
+  min-width: 1248px;
+}
+
 @layer base {
   :root {
     /* color */
     --primary-color: #5627D2;
     --title-color: #656468;
+    --link-color: #1A5BFF;
     --navbar-active: #D62CFC;
     --dropdown-border: #CFCFCF;
     --disabled-color: #8A8B92;
+    --advanced-btn: #4A4A4A;
+    --placeholder-color: #989898;
+    --input-color: #F1F1F1;
+    --home-title-color: #353364;
+    --purple-100: #E6E8F5;
+    --purple-200: #6C69C5;
     /* spacing */
     --spacing-1: 1px;
     --spacing-2: 2px;
     --spacing-3: 3px;
     --spacing-6: 6px;
     --spacing-10: 10px;
+    --spacing-14: 14px;
+    --spacing-18: 18px;
+    --spacing-20: 20px;
+    --spacing-40: 40px;
   }
 }

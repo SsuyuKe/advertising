@@ -1,5 +1,5 @@
-export interface AuthData {
-  account: string
+export interface LoginData {
+  loginId: string
   password: string
 }
 export interface LoginResponse {

@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClientProviders>
-          <div className="w-full h-full flex flex-col min-h-screen bg-[#E6E8F5]">
+          <div className="w-full h-full flex flex-col min-h-screen bg-purple-100">
             <Header />
             <main className="flex-1">
               <div className="container">
