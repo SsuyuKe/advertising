@@ -15,6 +15,26 @@ const nextConfig: NextConfig = {
       })
     )
     return config
+  },
+  images: {
+    domains: ['s3-drmn-cms.s3-ap-northeast-1.amazonaws.com']
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/api/:path*',
+          destination: 'http://15.220.86.12:33/api/:path*'
+        }
+      ],
+      afterFiles: [],
+      fallback: [
+        {
+          source: '/api/:path*',
+          destination: 'http://15.220.86.12:33/api/:path*'
+        }
+      ]
+    }
   }
 }
 

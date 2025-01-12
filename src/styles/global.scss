@@ -34,6 +34,8 @@ body {
     --home-title-color: #353364;
     --purple-100: #E6E8F5;
     --purple-200: #6C69C5;
+    --purple-300: #5627D2;
+    --purple-active: #A07CFD;
     /* spacing */
     --spacing-1: 1px;
     --spacing-2: 2px;
@@ -45,4 +47,8 @@ body {
     --spacing-20: 20px;
     --spacing-40: 40px;
   }
+}
+
+.ant-radio-inner::after {
+  display: none !important;
 }

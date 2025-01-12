@@ -3,11 +3,23 @@ export interface LoginData {
   password: string
 }
 export interface LoginResponse {
-  token: string
-  user: {
-    id: string
-    name: string
-  }
+  accountId: number
+  mobile: string
+  email: string
+  password: string
+  name: string
+  companyId: string
+  companyName: string
+  mobileVerified: string
+  emailVerified: string
+  accessToken: string
+  refreshToken: string | null
+  status: string
+  registerDate: string | null
+  loginDate: string
+  roleCodeList: string
+  functionIdList: string | null
+  message?: string
 }
 export interface UserResponse {
   id: string

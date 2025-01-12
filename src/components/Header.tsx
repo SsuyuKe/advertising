@@ -7,6 +7,7 @@ import Button from '@/components/Button'
 import { usePathname, useRouter } from 'next/navigation'
 import { Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
+import { useUserStore } from '@/store/user'
 
 type MenuItem = {
   title: string
@@ -14,10 +15,6 @@ type MenuItem = {
   menuTitle?: string
   prefix?: string
   items?: MenuProps['items']
-}
-
-const logout = () => {
-  console.log('登出')
 }
 
 const MENU_CONFIG: MenuItem[] = [
@@ -52,41 +49,46 @@ const MENU_CONFIG: MenuItem[] = [
     href: '/points-management'
   }
 ]
-const userItems: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <Link href="/user/profile">個人資料</Link>
-  },
-  {
-    key: '2',
-    label: <Link href="/user/update-profile">變更資料</Link>
-  },
-  {
-    key: '3',
-    label: <Link href="/user/agent">代理人</Link>
-  },
-  {
-    key: '4',
-    label: <Link href="/user/switch-identity">切換身分</Link>
-  },
-  {
-    key: '5',
-    label: <Link href="/user/favorite">我的最愛</Link>
-  },
-  {
-    key: '6',
-    label: (
-      <Button onClick={logout} className="w-full font-bold rounded py-1">
-        登出
-      </Button>
-    )
-  }
-]
 
 function Header() {
-  const token = true
+  const { token, setToken, username, setUsername } = useUserStore()
   const pathname = usePathname()
   const router = useRouter()
+  const logout = () => {
+    setToken('')
+    setUsername('')
+    router.push('/login')
+  }
+  const userItems: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <Link href="/user/profile">個人資料</Link>
+    },
+    {
+      key: '2',
+      label: <Link href="/user/change-password">變更密碼</Link>
+    },
+    {
+      key: '3',
+      label: <Link href="/user/agent">代理人</Link>
+    },
+    {
+      key: '4',
+      label: <Link href="/user/switch-identity">切換身分</Link>
+    },
+    {
+      key: '5',
+      label: <Link href="/user/favorite">我的最愛</Link>
+    },
+    {
+      key: '6',
+      label: (
+        <Button onClick={logout} className="w-full font-bold rounded py-1">
+          登出
+        </Button>
+      )
+    }
+  ]
   return (
     <header className="bg-white">
       <div className="container">
@@ -153,7 +155,7 @@ function Header() {
                       width={30}
                       height={30}
                     />
-                    <p className="ml-2 text-primary font-bold">Test001</p>
+                    <p className="ml-2 text-primary font-bold">{username}</p>
                     <div
                       className={clsx(
                         'absolute left-0 bottom-[-15px] w-full h-2px group-hover:bg-navbar-active bg-transparent',

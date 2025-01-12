@@ -1,8 +1,8 @@
 import '@/styles/global.scss'
-import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import ClientProviders from '@/lib/providers/ClientProviders'
+import type { Metadata } from 'next'
 import Header from '@/components/Header'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,12 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClientProviders>
-          <div className="w-full h-full flex flex-col min-h-screen bg-purple-100">
+          <div className="w-full flex flex-col min-h-screen bg-purple-100">
             <Header />
             <main className="flex-1">
-              <div className="container">
-                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-              </div>
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
             </main>
           </div>
         </ClientProviders>

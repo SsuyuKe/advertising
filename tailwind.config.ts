@@ -31,7 +31,9 @@ export default {
         input: 'var(--input-color)',
         purple: {
           100: 'var(--purple-100)',
-          200: 'var(--purple-200)'
+          200: 'var(--purple-200)',
+          300: 'var(--purple-300)',
+          active: 'var(--purple-active)'
         }
       },
       backgroundImage: {
@@ -47,8 +49,9 @@ export default {
       },
       borderWidth: {},
       boxShadow: {
-        primary: '0 4px 4px 0 rgba(93,28,139,0.25)',
-        'button-primary': '0 4px 4px 0 rgba(0, 0, 0, 0.25)'
+        common: '0 4px 4px 0 rgba(93, 28, 139, 0.25)',
+        'button-primary': '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
+        pagination: '0 3.2px 3.2px 0 rgba(0, 0, 0, 0.25)'
       },
       fontSize: {
         xxs: ['10px', '12px'], // 超小字體

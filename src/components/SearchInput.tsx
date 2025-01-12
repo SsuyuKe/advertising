@@ -2,42 +2,39 @@ import clsx from 'clsx'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 
-interface SearchInputProps {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string
   onSearch: (value: string) => void
-  onAdvancedSearch?: () => void
-  showAdvancedSearch?: boolean
   className?: string
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({
-  placeholder = '請搜尋投放區域',
+const SearchInput: React.FC<Props> = ({
+  placeholder = '',
   onSearch,
-  onAdvancedSearch,
-  showAdvancedSearch = false,
-  className
+  className,
+  children
 }) => {
-  const [value, setValue] = useState('')
+  const [keyword, setKeyword] = useState('')
 
   const handleSearch = () => {
-    if (value.trim()) {
-      onSearch(value)
+    if (keyword.trim()) {
+      onSearch(keyword)
     }
   }
 
   return (
     <div
       className={clsx(
-        'bg-white shadow-md p-2 rounded-10px shadow-primary inline-block',
+        'bg-white p-2 rounded-10px shadow-common inline-block',
         className
       )}
     >
       <div className="flex items-center">
         <Input
           placeholder={placeholder}
-          value={value}
+          value={keyword}
           className="!rounded-6px !w-64 !placeholder:text-sm !py-2 !px-10px !text-sm"
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setKeyword(e.target.value)}
         />
         <Button
           onClick={handleSearch}
@@ -45,14 +42,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         >
           搜尋
         </Button>
-        {showAdvancedSearch && onAdvancedSearch && (
-          <Button
-            onClick={onAdvancedSearch}
-            className="!bg-advanced text-white px-4 py-6px rounded-10px ml-2 font-bold text-sm"
-          >
-            條件搜尋
-          </Button>
-        )}
+        {children}
       </div>
     </div>
   )
