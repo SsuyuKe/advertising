@@ -20,9 +20,12 @@ export default {
       },
       colors: {
         primary: 'var(--primary-color)',
+        danger: 'var(--danger-color)',
+        dark: 'var(--dark-color)',
         title: 'var(--title-color)',
         link: 'var(--link-color)',
-        'home-title': 'var(--home-title-color)',
+        'primary-transparent': 'var(--primary-transparent-color)',
+        'primary-title': 'var(--primary-title-color)',
         disabled: 'var(--disabled-color)',
         'dropdown-border': 'var(--dropdown-border)',
         'navbar-active': 'var(--navbar-active)',
@@ -34,7 +37,10 @@ export default {
           200: 'var(--purple-200)',
           300: 'var(--purple-300)',
           active: 'var(--purple-active)'
-        }
+        },
+        'tag-danger': 'var(--tag-danger)',
+        'tag-warning': 'var(--tag-warning)',
+        'tag-success': 'var(--tag-success)'
       },
       backgroundImage: {
         logo: "url('/images/logo.png')",

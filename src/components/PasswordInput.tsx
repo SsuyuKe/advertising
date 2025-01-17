@@ -6,12 +6,14 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string
   placeholder?: string
   className?: string
+  onBlur: () => void
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const PasswordInput = ({
   value,
   onChange,
+  onBlur,
   placeholder = '請輸入密碼',
   className
 }: Props) => {
@@ -23,6 +25,7 @@ const PasswordInput = ({
         type={!isShowPassword ? 'password' : 'text'}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         placeholder={placeholder}
         className="w-full"
       />

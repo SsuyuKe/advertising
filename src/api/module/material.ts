@@ -7,7 +7,7 @@ export const getMaterialList = async (): Promise<MaterialItem[]> => {
   return data
 }
 
-// export const getMaterial = async (id: string) => {
-//   const { data } = await server.get(materialAPI.MATERIAL(id))
-//   return data
-// }
+export const getMaterial = async (id: number) => {
+  const { data } = await server.get(materialAPI.MATERIAL(id))
+  return data
+}

@@ -10,7 +10,7 @@ export interface MaterialItem {
   md5: string
   playSeconds: number
   tag: string
-  status: string
+  status: 'Approve' | 'Reject' | 'Apply'
   applyDate: string
   reviewDate: string
   reviewReason: string

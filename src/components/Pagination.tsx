@@ -31,7 +31,7 @@ const Pagination: React.FC<Props> = ({
           alt="Brand"
         />
       </button>
-      <p>{currentPage}</p>
+      <p className="font-bold text-base">{currentPage}</p>
       <button
         onClick={onNext}
         disabled={currentPage === totalPages}

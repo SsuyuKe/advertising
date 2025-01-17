@@ -78,13 +78,13 @@ function Home() {
   return (
     <div className="flex pl-11">
       <div className="mr-[442px]">
-        <h3 className="text-home-title font-bold text-2xl mb-3 pt-32">
+        <h3 className="text-primary-title font-bold text-2xl mb-3 pt-32">
           全台版位
         </h3>
         <p className="text-purple-200 font-semibold text-[48px] leading-none mb-10">
           7,541,333
         </p>
-        <h3 className="text-xl text-home-title font-bold mb-7">各區版位</h3>
+        <h3 className="text-xl text-primary-title font-bold mb-7">各區版位</h3>
         <ul>
           {countries.map((item, index) => (
             <li
@@ -94,7 +94,7 @@ function Home() {
                   'border-b border-solid border-dropdown-border':
                     index !== countries.length - 1
                 },
-                'flex text-home-title items-center justify-between w-[230px] py-4 first:pt-0'
+                'flex text-primary-title items-center justify-between w-[230px] py-4 first:pt-0'
               )}
             >
               <div className="flex items-center">

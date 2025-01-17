@@ -10,25 +10,54 @@ import PasswordInput from '@/components/PasswordInput'
 import { Segmented, message } from 'antd'
 import { login } from '@/api/module/auth'
 import { useUserStore } from '@/store/user'
+import { rules, createValidator } from '@/utils/validation'
 
 const options = ['登入', '註冊']
 
 function Login() {
-  const [isLogin, setIsLogin] = useState(true)
+  const { token, setToken, setUsername, rememberAccount, setRememberAccount } =
+    useUserStore()
+  const [isLogin, setIsLogin] = useState<boolean>(true)
   const [option, setOption] = useState<string>('登入')
   const [loginId, setLoginId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [isRememberAccount, setIsRememberAccount] = useState(false)
+  const [isRememberAccount, setIsRememberAccount] = useState<boolean>(
+    Boolean(rememberAccount)
+  )
+  const [errors, setErrors] = useState<{
+    loginId?: string
+    password?: string
+    confirmPassword?: string
+  }>({})
   const [messageApi, contextHolder] = message.useMessage()
-  const { token, setToken, setUsername } = useUserStore()
 
+  const validateField = (field: string, value: string) => {
+    let validator
+    if (field === 'loginId') validator = createValidator(rules.loginId)
+    if (field === 'password') validator = createValidator(rules.password)
+    if (field === 'confirmPassword')
+      validator = createValidator(rules.confirmPassword)
+
+    if (validator) {
+      const errorMessage = validator(value)
+      setErrors((prev) => ({ ...prev, [field]: errorMessage }))
+    }
+  }
+  const validateFields = () => {
+    validateField('loginId', loginId)
+    validateField('password', password)
+    if (!isLogin) {
+      validateField('confirmPassword', confirmPassword)
+    }
+    return Object.values(errors).every((error) => error === '')
+  }
   const reset = () => {
     setLoginId('')
     setPassword('')
     setConfirmPassword('')
+    setErrors({})
   }
-
   const handleChangeOption = (value: string) => {
     reset()
     setOption(value)
@@ -38,9 +67,9 @@ function Login() {
       setIsLogin(false)
     }
   }
-
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!validateFields()) return
     try {
       const {
         accessToken,
@@ -50,6 +79,11 @@ function Login() {
       if (loginMessage) {
         messageApi.error(loginMessage)
       } else {
+        if (isRememberAccount) {
+          setRememberAccount(loginId)
+        } else {
+          setRememberAccount('')
+        }
         setToken(accessToken)
         setUsername(name)
         redirect('/')
@@ -57,6 +91,11 @@ function Login() {
     } catch (err) {
       console.error(err)
     }
+  }
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!validateFields()) return
+    console.log('註冊成功')
   }
   useEffect(() => {
     if (token) {
@@ -91,10 +130,16 @@ function Login() {
                 帳號
               </label>
               <Input
-                value={loginId}
+                value={rememberAccount || loginId}
                 onChange={(e) => setLoginId(e.target.value)}
+                onBlur={() => validateField('loginId', loginId)}
                 placeholder="請輸入手機或電子郵箱"
               />
+              {errors.loginId && (
+                <span className="text-danger text-sm mt-1 ml-1">
+                  {errors.loginId}
+                </span>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="block font-bold text-title pl-10px pb-3">
@@ -104,7 +149,13 @@ function Login() {
                 className="flex-1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={() => validateField('password', password)}
               />
+              {errors.password && (
+                <span className="text-danger text-sm mt-1 ml-1">
+                  {errors.password}
+                </span>
+              )}
             </div>
             <div className="flex items-center justify-between mt-18px mb-10">
               <Checkbox
@@ -133,7 +184,7 @@ function Login() {
             </Button>
           </form>
         ) : (
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="flex flex-col mb-6">
               <label className="block font-bold text-title pl-10px pb-3">
                 帳號
@@ -141,8 +192,14 @@ function Login() {
               <Input
                 value={loginId}
                 onChange={(e) => setLoginId(e.target.value)}
+                onBlur={() => validateField('loginId', loginId)}
                 placeholder="請輸入手機或電子郵箱"
               />
+              {errors.loginId && (
+                <span className="text-danger text-sm mt-1 ml-1">
+                  {errors.loginId}
+                </span>
+              )}
             </div>
             <div className="flex flex-col mb-6">
               <label className="block font-bold text-title pl-10px pb-3">
@@ -152,7 +209,13 @@ function Login() {
                 className="flex-1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={() => validateField('password', password)}
               />
+              {errors.password && (
+                <span className="text-danger text-sm mt-1 ml-1">
+                  {errors.password}
+                </span>
+              )}
             </div>
             <div className="flex flex-col">
               <label className="block font-bold text-title pl-10px pb-3">
@@ -162,8 +225,14 @@ function Login() {
                 className="flex-1"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onBlur={() => validateField('confirmPassword', confirmPassword)}
                 placeholder="請再次確認密碼"
               />
+              {errors.confirmPassword && (
+                <span className="text-danger text-sm mt-1 ml-1">
+                  {errors.confirmPassword}
+                </span>
+              )}
             </div>
             <div className="flex items-center mt-18px mb-10">
               <Checkbox

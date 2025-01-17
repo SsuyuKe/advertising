@@ -23,19 +23,25 @@ body {
   :root {
     /* color */
     --primary-color: #5627D2;
+    --danger-color: #E42E00;
+    --dark-color: #2F2F2F;
     --title-color: #656468;
     --link-color: #1A5BFF;
+    --primary-transparent-color: rgba(230, 232, 245, 0.5);
     --navbar-active: #D62CFC;
     --dropdown-border: #CFCFCF;
     --disabled-color: #8A8B92;
     --advanced-btn: #4A4A4A;
     --placeholder-color: #989898;
     --input-color: #F1F1F1;
-    --home-title-color: #353364;
+    --primary-title-color: #353364;
     --purple-100: #E6E8F5;
     --purple-200: #6C69C5;
     --purple-300: #5627D2;
     --purple-active: #A07CFD;
+    --tag-danger: #FF2424;
+    --tag-warning: #FF9424;
+    --tag-success: #2A55FF;
     /* spacing */
     --spacing-1: 1px;
     --spacing-2: 2px;
