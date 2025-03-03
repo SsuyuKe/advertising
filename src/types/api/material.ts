@@ -18,4 +18,13 @@ export interface MaterialItem {
   accountName: string
   companyId: string
   companyName: string
+  tags: string[]
+}
+
+export interface UploadMaterialData {
+  name: string
+  width: number
+  height: number
+  playSecond: number
+  fileBase64: string
 }

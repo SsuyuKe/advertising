@@ -1,4 +1,7 @@
+import { generatePath } from '@/utils/url'
+
 export const deviceAPI = {
-  Login: '/api/Login',
-  Register: '/api/register'
+  DEVICE_LIST: '/api/Device/List',
+  DEVICE: (DeviceId: number) =>
+    generatePath('/api/Device/Device/:DeviceId', { DeviceId })
 }

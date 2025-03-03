@@ -3,6 +3,7 @@ import ClientProviders from '@/lib/providers/ClientProviders'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import { Suspense } from 'react'
+import 'antd/dist/reset.css'
 
 export const metadata: Metadata = {
   title: 'Create Next App',

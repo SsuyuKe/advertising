@@ -1,0 +1,29 @@
+.ant-select {
+  &.ant-select-single {
+    height: 40px !important;
+  }
+  .ant-select-selection-item {
+    font-size: 16px !important;
+    font-weight: bold !important;
+  }
+  .ant-select-selection-placeholder {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: var(--placeholder-color) !important;
+  }
+  .ant-select-selector {
+    border: none !important;
+    background: var(--input-color) !important;
+    border-radius: 10px !important;
+  }
+  &.ant-select-focused .ant-select-selector,
+  .ant-select-selector:focus,
+  .ant-select-selector:active,
+  &.ant-select-open .ant-select-selector {
+    box-shadow: none !important;
+  }
+}
+
+.ad-select-dropdown .ant-select-item-option-selected {
+  background-color: var(--purple-100) !important;
+}

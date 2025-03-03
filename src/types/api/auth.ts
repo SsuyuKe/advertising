@@ -1,6 +1,6 @@
 export interface LoginData {
-  loginId: string
-  password: string
+  LoginId: string
+  Password: string
 }
 export interface LoginResponse {
   accountId: number

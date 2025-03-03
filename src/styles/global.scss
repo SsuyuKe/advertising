@@ -16,7 +16,7 @@ html, body {
 }
 
 body {
-  min-width: 1248px;
+  min-width: 1200px;
 }
 
 @layer base {
@@ -27,17 +27,24 @@ body {
     --dark-color: #2F2F2F;
     --title-color: #656468;
     --link-color: #1A5BFF;
+    --track-color: #DA22FF;
     --primary-transparent-color: rgba(230, 232, 245, 0.5);
     --navbar-active: #D62CFC;
     --dropdown-border: #CFCFCF;
+    --horizontal-line-color: #1A1A1A;
     --disabled-color: #8A8B92;
     --advanced-btn: #4A4A4A;
     --placeholder-color: #989898;
     --input-color: #F1F1F1;
+    --required-color: #FF0000;
     --primary-title-color: #353364;
+    --gray-100: #F7F7F7;
+    --gray-200: #EEEEEE;
+    --gray-300: #DDDDDD;
     --purple-100: #E6E8F5;
     --purple-200: #6C69C5;
     --purple-300: #5627D2;
+    --purple-400: #A38AE4;
     --purple-active: #A07CFD;
     --tag-danger: #FF2424;
     --tag-warning: #FF9424;
@@ -52,9 +59,27 @@ body {
     --spacing-18: 18px;
     --spacing-20: 20px;
     --spacing-40: 40px;
+    --spacing-60: 60px;
   }
 }
 
 .ant-radio-inner::after {
   display: none !important;
+}
+
+.advanced-cropper {
+  background: transparent !important;
+}
+
+.gm-ui-hover-effect {
+  width: 24px !important;
+  height: 24px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+  }
 }

@@ -21,7 +21,7 @@ const Tag = ({ type = 'success', className, children }: Props) => {
   return (
     <span
       className={clsx(
-        'text-white text-sm inline-block py-1 px-5 rounded',
+        'text-white text-sm inline-block py-1 px-3 rounded',
         getBgColor(type),
         className
       )}

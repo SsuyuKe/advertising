@@ -23,19 +23,17 @@ const MENU_CONFIG: MenuItem[] = [
     href: '/'
   },
   {
-    title: '社區廣告',
-    prefix: '/community-advertising',
+    title: '設備廣告',
+    prefix: '/device-advertising',
     items: [
       {
         key: '1',
-        label: <Link href="/community-advertising/advertising">上刊廣告</Link>
+        label: <Link href="/device-advertising/advertising">上刊廣告</Link>
       },
       {
         key: '2',
         label: (
-          <Link href="/community-advertising/entrusted-management">
-            委託管理
-          </Link>
+          <Link href="/device-advertising/entrusted-management">委託管理</Link>
         )
       }
     ]
@@ -78,10 +76,6 @@ function Header() {
     },
     {
       key: '5',
-      label: <Link href="/user/favorite">我的最愛</Link>
-    },
-    {
-      key: '6',
       label: (
         <Button onClick={logout} className="w-full font-bold rounded py-1">
           登出

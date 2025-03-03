@@ -34,7 +34,7 @@ function Input({
       value={value}
       onChange={onChange}
       className={clsx(
-        'bg-input py-3 px-5 rounded-10px border-none outline-none placeholder:text-placeholder font-bold',
+        'bg-input py-2 px-5 rounded-10px border-none outline-none placeholder:text-placeholder font-bold',
         className
       )}
       {...props}

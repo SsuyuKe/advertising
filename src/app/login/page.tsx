@@ -75,7 +75,7 @@ function Login() {
         accessToken,
         name,
         message: loginMessage
-      } = await login({ loginId, password })
+      } = await login({ LoginId: loginId, Password: password })
       if (loginMessage) {
         messageApi.error(loginMessage)
       } else {
@@ -132,7 +132,7 @@ function Login() {
               <Input
                 value={rememberAccount || loginId}
                 onChange={(e) => setLoginId(e.target.value)}
-                onBlur={() => validateField('loginId', loginId)}
+                // onBlur={() => validateField('loginId', loginId)}
                 placeholder="請輸入手機或電子郵箱"
               />
               {errors.loginId && (

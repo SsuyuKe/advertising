@@ -1,10 +1,14 @@
 import { setItem, getItem, removeItem } from './localStorage'
 
-const TOKEN = 'TOKEN'
+const USER = 'user'
+const TOKEN = 'token'
 
 export const getToken = () => {
-  const token = getItem(TOKEN)
-  return token || ''
+  const user = getItem(USER)
+  if (user) {
+    const token = user.state.token
+    return token || ''
+  }
 }
 
 export const setToken = (token: string) => {

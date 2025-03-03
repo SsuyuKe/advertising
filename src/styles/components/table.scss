@@ -1,0 +1,40 @@
+.ant-table-wrapper .ant-table {
+  box-shadow: 0 4px 4px 0 rgba(93, 28, 139, 0.25);
+  border-radius: 8px !important;
+}
+.ant-table-wrapper .ant-table-thead >tr>th {
+  color: #353364 !important;
+  font-size: 16px;
+}
+.ant-table-wrapper .ant-table-tbody >tr >td {
+  color: #6C69C5 !important;
+  font-weight: bold;
+}
+.ant-checkbox .ant-checkbox-inner {
+  border-color: #6C69C5 !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #B598FF !important;
+  border-color: #B598FF !important;
+}
+
+.ant-checkbox-indeterminate .ant-checkbox-inner:after {
+  background-color: #B598FF !important;
+}
+.ant-table-wrapper .ant-checkbox-indeterminate:hover .ant-checkbox-inner {
+  border-color: #6C69C5 !important;
+}
+.ant-pagination .ant-pagination-item {
+  border-radius: 50% !important;
+  border-color: #d9d9d9 !important;
+}
+.ant-table-wrapper .ant-pagination .ant-pagination-item-active {
+  border-color: #6C69C5 !important;
+  background-color: #6C69C5 !important;
+  a {
+    color: #fff !important;
+  }
+}
+.ant-table-tbody .ant-table-row.ant-table-row-selected >.ant-table-cell {
+  background: #E6E8F5 !important;
+}

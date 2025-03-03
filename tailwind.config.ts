@@ -16,7 +16,9 @@ export default {
         '6px': 'var(--spacing-6)',
         '10px': 'var(--spacing-10)',
         '14px': 'var(--spacing-14)',
-        '18px': 'var(--spacing-18)'
+        '18px': 'var(--spacing-18)',
+        '40px': 'var(--spacing-40)',
+        '60px': 'var(--spacing-60)'
       },
       colors: {
         primary: 'var(--primary-color)',
@@ -24,6 +26,8 @@ export default {
         dark: 'var(--dark-color)',
         title: 'var(--title-color)',
         link: 'var(--link-color)',
+        track: 'var(--track-color)',
+        required: 'var(--required-color)',
         'primary-transparent': 'var(--primary-transparent-color)',
         'primary-title': 'var(--primary-title-color)',
         disabled: 'var(--disabled-color)',
@@ -32,11 +36,18 @@ export default {
         advanced: 'var(--advanced-btn)',
         placeholder: 'var(--placeholder-color)',
         input: 'var(--input-color)',
+        'horizontal-line': 'var(--horizontal-line-color)',
         purple: {
           100: 'var(--purple-100)',
           200: 'var(--purple-200)',
           300: 'var(--purple-300)',
+          400: 'var(--purple-400)',
           active: 'var(--purple-active)'
+        },
+        gray: {
+          100: 'var(--gray-100)',
+          200: 'var(--gray-200)',
+          300: 'var(--gray-300)'
         },
         'tag-danger': 'var(--tag-danger)',
         'tag-warning': 'var(--tag-warning)',
