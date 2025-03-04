@@ -4,10 +4,7 @@ import Input from '@/components/Input'
 import Select from '@/components/Select'
 import type { TableColumnsType } from 'antd'
 import type { TableProps, TablePaginationConfig } from 'antd/es/table'
-
-interface DataSource {
-  [key: number | string]: number | string
-}
+import { DataSource } from '@/types/components/table'
 
 const dataSource = Array.from({ length: 46 }).map((_, i) => ({
   key: i,

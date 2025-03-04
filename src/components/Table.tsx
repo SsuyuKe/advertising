@@ -7,10 +7,7 @@ import type {
   SorterResult,
   TableCurrentDataSource
 } from 'antd/es/table/interface'
-
-interface DataSource {
-  [key: number | string]: number | string
-}
+import { DataSource } from '@/types/components/table'
 
 interface Props {
   rowSelection?: TableProps<DataSource>['rowSelection']
@@ -19,7 +16,7 @@ interface Props {
   pageSize: number
   total: number
   current: number
-  onChange: (
+  onChange?: (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter: SorterResult<DataSource> | SorterResult<DataSource>[],

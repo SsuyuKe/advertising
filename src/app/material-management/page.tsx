@@ -15,7 +15,7 @@ const PAGE_SIZE = 10
 
 function MaterialManagement() {
   const [totalPages, setTotalPages] = useState(1)
-  const [currentPage, setCurrentPage] = useState(1)
+  // const [currentPage, setCurrentPage] = useState(1)
   const [materialList, setMaterialList] = useState<MaterialItem[]>([])
   const [option, setOption] = useState(options[0])
 
@@ -57,14 +57,9 @@ function MaterialManagement() {
             <Loading size="large" />
           ) : option === '素材清單' ? (
             <MaterialTable
-              data={materialList}
+              dataSource={materialList}
               totalPages={totalPages}
-              currentPage={currentPage}
               onDelete={handleMaterialDelete}
-              onPrev={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              onNext={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
             />
           ) : option === '影片上傳' ? (
             <VideoUpload />

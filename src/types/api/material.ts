@@ -1,3 +1,4 @@
+export type MaterialType = 'Approve' | 'Reject' | 'Apply'
 export interface MaterialItem {
   materialId: number
   category: string
@@ -10,7 +11,7 @@ export interface MaterialItem {
   md5: string
   playSeconds: number
   tag: string
-  status: 'Approve' | 'Reject' | 'Apply'
+  status: MaterialType
   applyDate: string
   reviewDate: string
   reviewReason: string
@@ -18,7 +19,6 @@ export interface MaterialItem {
   accountName: string
   companyId: string
   companyName: string
-  tags: string[]
 }
 
 export interface UploadMaterialData {
