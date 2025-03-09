@@ -10,7 +10,7 @@ export const getMaterialList = async (): Promise<MaterialItem[]> => {
     params: {
       AccessToken,
       PageNumber: 1,
-      DataCount: 10
+      DataCount: 100
     }
   })
   return data

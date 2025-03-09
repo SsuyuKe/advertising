@@ -27,4 +27,5 @@ export interface UploadMaterialData {
   height: number
   playSecond: number
   fileBase64: string
+  fileExt: string
 }

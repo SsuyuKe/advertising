@@ -23,7 +23,7 @@ const MENU_CONFIG: MenuItem[] = [
     href: '/'
   },
   {
-    title: '設備廣告',
+    title: '推播廣告',
     prefix: '/device-advertising',
     items: [
       {
@@ -33,7 +33,7 @@ const MENU_CONFIG: MenuItem[] = [
       {
         key: '2',
         label: (
-          <Link href="/device-advertising/entrusted-management">委託管理</Link>
+          <Link href="/device-advertising/entrusted-management">委刊列表</Link>
         )
       }
     ]

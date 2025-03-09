@@ -131,7 +131,8 @@ const ImageUpload = () => {
           width: imageWidth as number,
           height: imageHeight as number,
           playSecond: 0,
-          fileBase64
+          fileBase64,
+          fileExt: 'jpg'
         })
       } else {
         console.error('croppedImage is null')
