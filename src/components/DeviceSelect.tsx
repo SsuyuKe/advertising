@@ -50,13 +50,13 @@ const DeviceSelect = () => {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center !mb-7">
+        <DateRangePicker onChange={handleDateRangeChange} />
         <Segmented
           className="!bg-purple-100 !text-title font-bold"
           options={options}
           value={modeOption}
           onChange={handleModeChange}
         />
-        <DateRangePicker onChange={handleDateRangeChange} />
       </div>
       <div>{renderComponent}</div>
     </div>

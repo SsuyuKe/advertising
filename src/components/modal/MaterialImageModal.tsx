@@ -3,10 +3,11 @@ import Image from 'next/image'
 interface Props {
   isOpen: boolean
   src: string
+  title: string
   onClose: () => void
 }
 
-const MaterialImageModal = ({ isOpen, src, onClose }: Props) => {
+const MaterialImageModal = ({ isOpen, src, title, onClose }: Props) => {
   const isVideo = (src: string) => /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(src)
   const isImage = (src: string) =>
     /\.(jpeg|jpg|png|gif|bmp|svg|webp)$/i.test(src)
@@ -18,7 +19,10 @@ const MaterialImageModal = ({ isOpen, src, onClose }: Props) => {
       {/* 背景遮罩 */}
       <div className="absolute inset-0" onClick={onClose}></div>
       {/* Modal 主體 */}
-      <div className="relative bg-white rounded-20px shadow-common w-[387px] h-[450px] p-1">
+      <div className="relative bg-white rounded-20px shadow-common w-[387px] p-1 flex flex-col pb-5">
+        <p className="rounded-2xl  whitespace-nowrap text-ellipsis overflow-hidden text-purple-200 font-bold text-center leading-10">
+          {title}
+        </p>
         <button
           className="absolute top-3 right-4 text-white bg-purple-200 w-6 h-6 rounded-full flex justify-center items-center z-10"
           onClick={onClose}
@@ -31,19 +35,21 @@ const MaterialImageModal = ({ isOpen, src, onClose }: Props) => {
             alt="close"
           />
         </button>
-        {isImage(src) ? (
-          <Image
-            width={379}
-            height={442}
-            className="object-contain rounded-2xl h-full"
-            src={src}
-            alt="material"
-          />
-        ) : isVideo(src) ? (
-          <video controls className="object-contain w-full h-full rounded-2xl">
-            <source src={src} type="video/mp4" />
-          </video>
-        ) : null}
+        <div className="flex-1 flex flex-col justify-center">
+          {isImage(src) ? (
+            <Image
+              width={379}
+              height={442}
+              className="object-contain max-h-[350px]"
+              src={src}
+              alt="material"
+            />
+          ) : isVideo(src) ? (
+            <video controls className="object-contain w-full max-h-[350px]">
+              <source src={src} type="video/mp4" />
+            </video>
+          ) : null}
+        </div>
       </div>
     </div>
   )

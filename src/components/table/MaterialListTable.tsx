@@ -6,10 +6,10 @@ import ConfirmationModal from '@/components/modal/ConfirmationModal'
 import { getMaterial } from '@/api/module/material'
 import { MaterialItem } from '@/types/api/material'
 import { format } from 'date-fns'
-import type { TableColumnsType } from 'antd'
-import { DataSource } from '@/types/components/table'
 import { MaterialType } from '@/types/api/material'
 import Table from '@/components/Table'
+import type { TableColumnsType } from 'antd'
+import { DataSource } from '@/types/components/table'
 
 const getStatusColor = (status: 'Approve' | 'Apply' | 'Reject') => {
   switch (status) {
@@ -32,6 +32,7 @@ interface Props {
 
 const PAGE_SIZE = 10
 
+// TODO: 修改彈窗打開時，圖片為完整顯示會有高度跳動的問題
 const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
   const [selectedMaterialId, setSelectedMaterialId] = useState<number>(0)
   const [selectedMaterialName, setSelectedMaterialName] = useState<string>('')
@@ -40,10 +41,12 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const handleViewMaterial = async (id: number) => {
+  const handleViewMaterial = async (item: DataSource) => {
+    // console.log(item);
     try {
-      const data = await getMaterial(id)
+      const data = await getMaterial(item.materialId as number)
       setSelectedViewImage(data.filePath)
+      setSelectedMaterialName(data.name)
       setIsMaterialImageOpen(true)
     } catch (err) {
       console.error(err)
@@ -68,14 +71,15 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
       title: '上傳時間',
       dataIndex: 'applyDate',
       key: 'applyDate',
-      render: (_, record) => format(new Date(record.applyDate), 'yyyy-MM-dd')
+      render: (_: unknown, record: DataSource) =>
+        format(new Date(record.applyDate), 'yyyy-MM-dd')
     },
     { title: '原因', dataIndex: 'reviewReason', key: 'reviewReason' },
     {
       title: '狀態',
       dataIndex: 'status',
       key: 'status',
-      render: (_, record) => (
+      render: (_: unknown, record: DataSource) => (
         <Tag
           className="!text-sm"
           type={getStatusColor(record.status as MaterialType)}
@@ -92,11 +96,11 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (_, record) => (
+      render: (_: unknown, record: DataSource) => (
         <Button
           type="dark"
           className="rounded-[52px] py-1 px-6 text-sm"
-          onClick={() => handleViewMaterial(record.materialId as number)}
+          onClick={() => handleViewMaterial(record as DataSource)}
         >
           檢視
         </Button>
@@ -106,7 +110,7 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
       title: '刪除',
       dataIndex: 'delete',
       key: 'delete',
-      render: (_, record) => (
+      render: (_: unknown, record: DataSource) => (
         <Button
           className="bg-transparent border-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           onClick={() =>
@@ -140,6 +144,7 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
       <MaterialImageModal
         isOpen={isMaterialImageOpen}
         src={selectedViewImage}
+        title={selectedMaterialName}
         onClose={() => setIsMaterialImageOpen(false)}
       />
       <ConfirmationModal

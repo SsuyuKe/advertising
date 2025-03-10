@@ -1,125 +1,57 @@
 'use client'
 
-import clsx from 'clsx'
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
+import Input from '@/components/Input'
+import Button from '@/components/Button'
+import Loading from '@/components/Loading'
+import { Library } from '@googlemaps/js-api-loader'
 
-const countries = [
-  {
-    id: 1,
-    name: '台北市',
-    count: 897
-  },
-  {
-    id: 2,
-    name: '台北市',
-    count: 897
-  },
-  {
-    id: 3,
-    name: '台北市',
-    count: 897
-  },
-  {
-    id: 4,
-    name: '台北市',
-    count: 897
-  },
-  {
-    id: 5,
-    name: '台北市',
-    count: 897
-  },
-  {
-    id: 6,
-    name: '台北市',
-    count: 897
-  }
-]
+const mapOptions = {
+  mapTypeControl: false,
+  fullscreenControl: false,
+  streetViewControl: false,
+  clickableIcons: false
+}
 
-const countryCounts = [
-  {
-    name: '台北市',
-    count: 123,
-    position: 'top-[-40px] right-[-16px]',
-    bgColor: '#67C8FF'
-  },
-  {
-    name: '新北市',
-    count: 123,
-    position: 'top-[90px] right-[-20px]',
-    bgColor: '#FB9AF8'
-  },
-  {
-    name: '桃園市',
-    count: 123,
-    position: 'top-[10px] left-[30px]',
-    bgColor: '#8675FF'
-  },
-  {
-    name: '新竹市',
-    count: 123,
-    position: 'top-[110px] left-[-30px]',
-    bgColor: '#7DDBA4'
-  },
-  {
-    name: '台中市',
-    count: 123,
-    position: 'top-[210px] left-[-100px]',
-    bgColor: '#F9A44C'
-  },
-  {
-    name: '高雄市',
-    count: 123,
-    position: 'bottom-[100px] left-[-84px]',
-    bgColor: '#FF718B'
-  }
-]
+const containerStyle = {
+  width: '100%',
+  height: '100%'
+}
+const defaultCenter = { lat: 25.033964, lng: 121.564472 }
+const LIBRARIES: Library[] = ['places']
 
 function Home() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+    libraries: LIBRARIES
+  })
+  if (!isLoaded) return <Loading size="large" />
   return (
-    <div className="flex pl-11">
-      <div className="mr-[442px]">
-        <h3 className="text-primary-title font-bold text-2xl mb-3 pt-32">
-          全台版位
-        </h3>
-        <p className="text-purple-200 font-semibold text-[48px] leading-none mb-10">
-          7,541,333
-        </p>
-        <h3 className="text-xl text-primary-title font-bold mb-7">各區版位</h3>
-        <ul>
-          {countries.map((item, index) => (
-            <li
-              key={item.id}
-              className={clsx(
-                {
-                  'border-b border-solid border-dropdown-border':
-                    index !== countries.length - 1
-                },
-                'flex text-primary-title items-center justify-between w-[230px] py-4 first:pt-0'
-              )}
-            >
-              <div className="flex items-center">
-                <p className="w-14px h-14px rounded-full bg-blue-400 mr-3"></p>
-                <p className="font-medium">{item.name}</p>
-              </div>
-              <p>{item.count}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bg-taiwan-map bg-contain bg-no-repeat relative w-[422px] h-[640px] mt-14">
-        {countryCounts.map((item) => (
-          <div
-            key={item.name}
-            className={clsx(
-              'w-[86px] h-20 rounded-10px absolute text-white text-sm font-semibold flex flex-col justify-center items-center',
-              `${item.position}`
-            )}
-            style={{ backgroundColor: item.bgColor }}
-          >
-            <p className="mb-2">{item.name}</p>
-            <p>{item.count}</p>
-          </div>
+    <div className="flex relative h-[calc(100vh-60px)]">
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={defaultCenter}
+        zoom={15}
+        options={mapOptions}
+      />
+      <div className="absolute top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer">
+        {Array.from({ length: 3 }, (value, index) => index).map((_, index) => (
+          <p key={index} className="bg-primary w-[26px] h-2px"></p>
         ))}
+      </div>
+      <div className="absolute top-4 left-1/2  -translate-x-1/2 flex flex-col gap-2 z-50">
+        {/* 搜尋欄 */}
+        <div className="flex bg-white shadow-common w-[342px] rounded-10px p-2 gap-2">
+          <Input
+            value={searchQuery}
+            placeholder="輸入城市名稱"
+            className="flex-1 p-2 text-black rounded-6px"
+            onChange={() => setSearchQuery('')}
+          />
+          <Button className="px-4 py-6px rounded-10px">搜尋</Button>
+        </div>
       </div>
     </div>
   )

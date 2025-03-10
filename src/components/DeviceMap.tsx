@@ -14,6 +14,7 @@ import Message from '@/components/Message'
 import Loading from '@/components/Loading'
 import { Slider, Skeleton } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Pagination from '@/components/Pagination'
 import { debounce } from '@/utils/common'
 
 // TODO: 選擇的地點要用紫色框線標記
@@ -66,6 +67,7 @@ const getApiLanguage = (userLanguage: string) => {
 }
 
 const LIBRARIES: Library[] = ['places']
+const PAGE_SIZE = 5
 
 const createIcon = (url: string) => {
   if (typeof google === 'undefined') return undefined
@@ -104,6 +106,8 @@ const DeviceMap = () => {
     text: '',
     duration: 2000 // 默認持續時間
   })
+  const [currentPage, setCurrentPage] = useState(1)
+
   const pageSize = 10 // 每頁顯示數量
   const debouncedFetchRef = useRef<
     ((place: google.maps.places.PlaceResult) => void) | null
@@ -211,7 +215,6 @@ const DeviceMap = () => {
         lat: userPlace.geometry.location.lat(),
         lng: userPlace.geometry.location.lng()
       }
-      console.log('location', location)
 
       setLoading(true)
       const service = new window.google.maps.places.PlacesService(map)
@@ -223,12 +226,11 @@ const DeviceMap = () => {
 
       service.nearbySearch(request, (results, status) => {
         setLoading(false)
-        console.log(results)
-
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           // 初始只顯示前10個結果
           const safeResults = results ?? []
           if (safeResults.length) {
+            setSelectedPlaces(results ?? [])
             setAllPlaces(results ?? [])
             setDisplayedPlaces((results ?? []).slice(0, pageSize))
             setHasMore((results ?? []).length > pageSize)
@@ -546,37 +548,71 @@ const DeviceMap = () => {
           )}
         </div>
         <div className="absolute right-4 bottom-8">
+          {selectedPlaces.length ? (
+            <>
+              <div className="flex justify-end">
+                <Pagination
+                  className="mb-3"
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(selectedPlaces.length / PAGE_SIZE)}
+                  onPrev={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onNext={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.ceil(selectedPlaces.length / PAGE_SIZE)
+                      )
+                    )
+                  }
+                />
+              </div>
+              <div className="flex justify-between items-center mb-3">
+                <p className="font-bold">
+                  已選擇{' '}
+                  <span className="text-primary">{selectedPlaces.length}</span>{' '}
+                  筆
+                </p>
+                <p className="font-bold">
+                  共 {Math.ceil(selectedPlaces.length / PAGE_SIZE)} 頁
+                </p>
+              </div>
+            </>
+          ) : (
+            ''
+          )}
           <ul className="mb-2">
-            {selectedPlaces.map((place) => (
-              <li
-                key={place.place_id}
-                className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl mb-2 last:mb-0"
-              >
-                <button
-                  onClick={() => handlePlaceClick(place)}
-                  className="bg-primary rounded-full relative w-6 h-6 border border-solid border-gray-200 mr-6"
+            {selectedPlaces
+              .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+              .map((place) => (
+                <li
+                  key={place.place_id}
+                  className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl mb-2 last:mb-0 w-80"
                 >
-                  <Image
-                    width={12}
-                    height={10}
-                    className="object-contain absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
-                    src="/icons/close.svg"
-                    alt="Brand"
-                  />
-                </button>
-                {/* TODO: 可能會改 */}
-                <span className="text-purple-200">
-                  {place.vicinity || place.formatted_address}
-                </span>
-              </li>
-            ))}
+                  <button
+                    onClick={() => handlePlaceClick(place)}
+                    className="bg-primary rounded-full relative w-6 h-6 border border-solid border-gray-200 mr-6"
+                  >
+                    <Image
+                      width={12}
+                      height={10}
+                      className="object-contain absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+                      src="/icons/close.svg"
+                      alt="Brand"
+                    />
+                  </button>
+                  {/* TODO: 可能會改 */}
+                  <span className="text-purple-200 flex-1">{place.name}</span>
+                </li>
+              ))}
           </ul>
           {/* TODO: 再更改 */}
-          {selectedPlaces.length && (
+          {selectedPlaces.length ? (
             <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-xl">
               <span className="mr-3 font-bold">估計花費點數:</span>
               <span className="text-purple-200">300</span>
             </div>
+          ) : (
+            ''
           )}
         </div>
       </div>

@@ -11,6 +11,7 @@ const dataSource = Array.from({ length: 46 }).map((_, i) => ({
   seconds: i,
   address: `台北市${i}號`
 }))
+const dataKeys = Array.from({ length: 46 }).map((_, i) => i)
 
 const columns: TableColumnsType<DataSource> = [
   { title: '地址', dataIndex: 'address' },
@@ -19,7 +20,7 @@ const columns: TableColumnsType<DataSource> = [
 
 const DeviceSelectTable = () => {
   const [keyword, setKeyword] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(dataKeys)
   const [isSearch, setIsSearch] = useState(false)
   const [second, setSecond] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
@@ -49,6 +50,7 @@ const DeviceSelectTable = () => {
     ) => {
       console.log('Selected rows:', newSelectedRows)
       setSelectedRowKeys(newSelectedRowKeys)
+      console.log('newSelectedRowKeys', newSelectedRowKeys)
     }
   }
   const handleTableChange = (pagination: TablePaginationConfig) => {
@@ -70,9 +72,7 @@ const DeviceSelectTable = () => {
             />
           </div>
           <div>
-            <label className="block font-bold text-title pb-3">
-              設備所屬公司
-            </label>
+            <label className="block font-bold text-title pb-3">媒體通路</label>
             <Select
               className="!w-[200px]"
               placeholder="請選擇"

@@ -39,6 +39,9 @@ function MaterialManagement() {
       // setIsDeleteModalOpen(false)
     }
   }
+  const handleSearch = () => {
+    console.log('search')
+  }
   useEffect(() => {
     getMaterialTableData()
   }, [])
@@ -46,7 +49,14 @@ function MaterialManagement() {
     <>
       <div className="pt-4 pb-14">
         <div className="container">
-          <SearchBar className="mb-5 text-purple-200">{option}</SearchBar>
+          <SearchBar
+            className="mb-5 text-purple-200"
+            placeholder="請輸入關鍵字"
+            onSearch={handleSearch}
+            showSearch
+          >
+            {option}
+          </SearchBar>
           <Segmented
             className="!bg-purple-100 !text-title font-bold !mb-7"
             options={options}
