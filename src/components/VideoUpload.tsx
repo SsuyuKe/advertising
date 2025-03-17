@@ -15,6 +15,7 @@ interface VideoInfo {
   size: number | null
   duration: number | null
 }
+// TODO: 上傳完圖片、影片要跳回素材清單最後一頁
 
 const MAX_FILE_SIZE = 32 * 1024 * 1024 // 32MB
 // const MAX_DIMENSIONS = { width: 720, height: 1280 };

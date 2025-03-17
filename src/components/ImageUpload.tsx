@@ -11,6 +11,8 @@ import { useMessage } from '@/lib/hooks/useMessage'
 const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
 // const MAX_DIMENSIONS = { width: 720, height: 1280 };
 
+// TODO: 上傳完圖片、影片要跳回素材清單最後一頁
+
 const ImageUpload = () => {
   const [materialName, setMaterialName] = useState<string>('')
   const [imageInfo, setImageInfo] = useState({

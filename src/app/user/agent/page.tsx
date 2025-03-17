@@ -22,7 +22,7 @@ function Agent() {
             className="w-60 py-3 rounded-40px shadow-button-primary"
             disabled={true}
           >
-            變更密碼
+            設定
           </Button>
         </div>
       </div>

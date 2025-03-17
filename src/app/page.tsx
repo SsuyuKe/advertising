@@ -48,7 +48,7 @@ function Home() {
             value={searchQuery}
             placeholder="輸入城市名稱"
             className="flex-1 p-2 text-black rounded-6px"
-            onChange={() => setSearchQuery('')}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Button className="px-4 py-6px rounded-10px">搜尋</Button>
         </div>

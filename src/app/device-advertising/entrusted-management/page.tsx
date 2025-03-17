@@ -129,7 +129,7 @@ function EntrustedManagement() {
           onSearch={handleSearch}
           showSearch={true}
         >
-          委刊管理
+          委刊列表
         </SearchBar>
         <Table
           columns={columns}
