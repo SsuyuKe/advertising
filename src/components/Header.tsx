@@ -72,7 +72,7 @@ function Header() {
     },
     {
       key: '4',
-      label: <Link href="/user/switch-identity">切換身分</Link>
+      label: <Link href="/user/choose-customer">選擇客戶</Link>
     },
     {
       key: '5',

@@ -12,6 +12,7 @@ import { MaterialItem } from '@/types/api/material'
 import DeviceSelectTable from '@/components/DeviceSelect'
 
 function Advertising() {
+  const [advertisingName, setAdvertisingName] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [materialList, setMaterialList] = useState<MaterialItem[]>([])
@@ -30,12 +31,12 @@ function Advertising() {
     console.log('search')
   }
   const handleNextStep = () => {
-    if (step === 1 && selectedMaterial) {
+    if (step === 1 && selectedMaterial && advertisingName) {
       setStep(2)
     }
   }
-  const handleAdvertisingSearch = () => {
-    console.log('search')
+  const handleAdvertisingName = () => {
+    console.log(advertisingName)
   }
 
   const handleSelect = (value: string | number) => {
@@ -62,8 +63,10 @@ function Advertising() {
           <>
             <div className="flex items-center justify-between mb-4">
               <SearchInput
-                placeholder="廣告活動名稱"
-                onSearch={handleAdvertisingSearch}
+                value={advertisingName}
+                onChange={(e) => setAdvertisingName(e.target.value.trim())}
+                placeholder="請輸入廣告活動名稱"
+                onConfirm={handleAdvertisingName}
               />
               <Pagination
                 currentPage={currentPage}
@@ -98,7 +101,7 @@ function Advertising() {
                 <div className="py-8 flex justify-center">
                   <Button
                     className="px-20 py-4 rounded-40px font-bold"
-                    disabled={!selectedMaterial}
+                    disabled={!selectedMaterial || !advertisingName}
                     onClick={handleNextStep}
                   >
                     下一步

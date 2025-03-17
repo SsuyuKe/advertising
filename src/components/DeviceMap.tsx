@@ -16,6 +16,7 @@ import { Slider, Skeleton } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Pagination from '@/components/Pagination'
 import { debounce } from '@/utils/common'
+import { useMessage } from '@/lib/hooks/useMessage'
 
 // TODO: 選擇的地點要用紫色框線標記
 // TODO: sidebar搜尋結果載入效果
@@ -101,11 +102,8 @@ const DeviceMap = () => {
   const [selectedPlaces, setSelectedPlaces] = useState<
     google.maps.places.PlaceResult[]
   >([])
-  const [message, setMessage] = useState({
-    open: false,
-    text: '',
-    duration: 2000 // 默認持續時間
-  })
+  const { message, showMessage, closeMessage } = useMessage()
+
   const [currentPage, setCurrentPage] = useState(1)
 
   const pageSize = 10 // 每頁顯示數量
@@ -161,14 +159,6 @@ const DeviceMap = () => {
     setMap(null) // 確保地圖資源釋放
   }, [])
 
-  const showMessage = (text: string, duration = 2000) => {
-    setMessage({ open: true, text, duration })
-
-    setTimeout(() => {
-      setMessage((prev) => ({ ...prev, open: false }))
-    }, duration)
-  }
-
   const resetSearchResult = () => {
     setAllPlaces([])
     setDisplayedPlaces([])
@@ -201,7 +191,7 @@ const DeviceMap = () => {
       }
       setIsSidebarOpen(true)
     })
-  }, [map, searchQuery, userLanguage])
+  }, [map, searchQuery, userLanguage, showMessage])
 
   const fetchNearbyPlaces = useCallback(
     (userPlace: google.maps.places.PlaceResult) => {
@@ -620,7 +610,7 @@ const DeviceMap = () => {
         open={message.open}
         text={message.text}
         duration={message.duration}
-        onClose={() => setMessage((prev) => ({ ...prev, open: false }))}
+        onClose={closeMessage}
       />
     </>
   )

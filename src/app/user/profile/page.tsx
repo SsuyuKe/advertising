@@ -17,7 +17,7 @@ function Profile() {
         <div className="bg-white rounded-xl shadow-common py-6 mb-4 flex gap-6 px-5">
           <div className="flex flex-col gap-4 flex-1">
             <div className="flex items-center gap-3">
-              <label className="font-bold text-title">綁定手機</label>
+              <label className="font-bold text-primary-title">綁定手機</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -27,7 +27,7 @@ function Profile() {
               <Button className="px-2 py-1 rounded font-bold">寄送驗證</Button>
             </div>
             <div className="flex items-center gap-3">
-              <label className="font-bold text-title">手機驗證</label>
+              <label className="font-bold text-primary-title">手機驗證</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -41,7 +41,7 @@ function Profile() {
           </div>
           <div className="flex flex-col gap-4 flex-1">
             <div className="flex items-center gap-3">
-              <label className="font-bold text-title">綁定信箱</label>
+              <label className="font-bold text-primary-title">綁定信箱</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -51,7 +51,7 @@ function Profile() {
               <Button className="px-2 py-1 rounded font-bold">寄送驗證</Button>
             </div>
             <div className="flex items-center gap-3">
-              <label className="font-bold text-title">信箱驗證</label>
+              <label className="font-bold text-primary-title">信箱驗證</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -67,7 +67,7 @@ function Profile() {
         <div className="bg-white rounded-xl shadow-common py-6 px-5">
           <div className="flex items-center flex-wrap gap-6">
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">
+              <label className="font-bold text-primary-title">
                 姓名
                 <span className="text-danger">*</span>
               </label>
@@ -79,7 +79,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">身分證</label>
+              <label className="font-bold text-primary-title">身分證</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -88,7 +88,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">公司名稱</label>
+              <label className="font-bold text-primary-title">公司名稱</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -97,7 +97,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">公司統編</label>
+              <label className="font-bold text-primary-title">公司統編</label>
               <Input
                 className="flex-1"
                 value={phone}
@@ -106,7 +106,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">地址</label>
+              <label className="font-bold text-primary-title">地址</label>
               <div className="flex items-center flex-1 gap-5">
                 <Select
                   className="flex-1"
@@ -141,7 +141,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">付款方式</label>
+              <label className="font-bold text-primary-title">付款方式</label>
               <Select
                 className="flex-1"
                 placeholder="付款方式"
@@ -155,7 +155,7 @@ function Profile() {
               />
             </div>
             <div className="flex-1 min-w-[calc(50%-24px)] flex gap-3 items-center">
-              <label className="font-bold text-title">刊登目的</label>
+              <label className="font-bold text-primary-title">刊登目的</label>
               <Select
                 className="flex-1"
                 placeholder="刊登目的"
@@ -169,7 +169,7 @@ function Profile() {
               />
             </div>
             <div className="w-1/2 flex gap-3 items-center">
-              <label className="font-bold text-title">
+              <label className="font-bold text-primary-title">
                 如何知道東森分中廣告
               </label>
               <Select

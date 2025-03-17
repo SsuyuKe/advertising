@@ -3,25 +3,21 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
-  onSearch: (value: string) => void
+  onConfirm: () => void
   className?: string
 }
 
 const SearchInput: React.FC<Props> = ({
+  value,
+  onChange,
   placeholder = '',
-  onSearch,
+  onConfirm,
   className,
   children
 }) => {
-  const [keyword, setKeyword] = useState('')
-
-  const handleSearch = () => {
-    if (keyword.trim()) {
-      onSearch(keyword)
-    }
-  }
-
   return (
     <div
       className={clsx(
@@ -32,15 +28,15 @@ const SearchInput: React.FC<Props> = ({
       <div className="flex items-center">
         <Input
           placeholder={placeholder}
-          value={keyword}
+          value={value}
           className="!rounded-6px !w-64 !placeholder:text-sm !py-2 !px-10px !text-sm"
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={onChange}
         />
         <Button
-          onClick={handleSearch}
+          onClick={onConfirm}
           className="bg-primary text-white px-4 py-6px rounded-10px ml-2 font-bold text-sm"
         >
-          搜尋
+          確認
         </Button>
         {children}
       </div>
