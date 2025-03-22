@@ -41,6 +41,7 @@ body {
     --gray-100: #F7F7F7;
     --gray-200: #EEEEEE;
     --gray-300: #DDDDDD;
+    --gray-400: #e0e0e0;
     --purple-100: #E6E8F5;
     --purple-200: #6C69C5;
     --purple-300: #5627D2;
@@ -71,7 +72,7 @@ body {
   background: transparent !important;
 }
 
-.gm-ui-hover-effect {
+button.gm-ui-hover-effect {
   width: 24px !important;
   height: 24px !important;
   display: flex;
