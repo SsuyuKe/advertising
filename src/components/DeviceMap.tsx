@@ -214,6 +214,7 @@ const DeviceMap = () => {
   const handleCenter = (item: google.maps.places.PlaceResult) => {
     setCenter(item)
     setDistance(5)
+    setIsSidebarOpen(false)
     setSelectedDevice(null)
     // TODO: 確保更新標記的圖標 => 確認新的搜尋結果有匹配到地圖圖標
   }
@@ -385,14 +386,14 @@ const DeviceMap = () => {
           )}
         </GoogleMap>
         <Button
-          className="py-4 px-20 absolute bottom-8 left-1/2 -translate-x-1/2 rounded-40px"
+          className="py-4 px-20 absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 rounded-40px whitespace-nowrap"
           disabled={!selectedDevices.length}
         >
           刊登廣告
         </Button>
         {!isSidebarOpen ? (
           <div
-            className="absolute top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
+            className="absolute top-[124px] md:top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
             onClick={() => setIsSidebarOpen(true)}
           >
             {Array.from({ length: 3 }, (value, index) => index).map(
@@ -402,7 +403,7 @@ const DeviceMap = () => {
             )}
           </div>
         ) : (
-          <div className="absolute top-4 left-4 bg-white rounded-10px w-80">
+          <div className="absolute top-[124px] md:top-4 left-4 z-20 bg-white rounded-10px w-[calc(100%-32px)]">
             <h2 className="flex items-center justify-between px-5 py-3 border-b border-solid border-purple-400">
               <p className="text-xl text-purple-200 font-bold">搜尋關鍵字</p>
               <button
@@ -509,7 +510,7 @@ const DeviceMap = () => {
             ''
           )}
         </div>
-        <div className="absolute right-4 bottom-8">
+        <div className="absolute left-1/2 md:left-auto -translate-x-1/2 md:-translate-x-0 bottom-24 md:right-4 md:bottom-8">
           {selectedDevices.length ? (
             <>
               <div className="flex justify-end">
@@ -548,7 +549,7 @@ const DeviceMap = () => {
               .map((device) => (
                 <li
                   key={device.deviceId}
-                  className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl mb-2 last:mb-0 w-80"
+                  className="flex items-center py-3 md:py-4 px-5 bg-white shadow-common rounded-xl mb-2 last:mb-0 w-80"
                 >
                   <button
                     onClick={() => handleDeviceClick(device)}
@@ -569,7 +570,7 @@ const DeviceMap = () => {
           </ul>
           {/* TODO: 再更改 */}
           {selectedDevices.length ? (
-            <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-xl">
+            <div className="flex items-center py-3 md:py-4 px-5 bg-white shadow-common rounded-xl text-base md:text-xl">
               <span className="mr-3 font-bold">估計花費點數:</span>
               <span className="text-purple-200">300</span>
             </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import SearchInput from '@/components/SearchInput'
 import SearchBar from '@/components/SearchBar'
 import Table from '@/components/Table'
 import Image from 'next/image'
@@ -13,6 +14,7 @@ const PAGE_SIZE = 10
 
 function EntrustedManagement() {
   const [currentPage, setCurrentPage] = useState(1)
+  const [keyword, setKeyword] = useState('')
 
   const handleSearch = () => {
     console.log('search')
@@ -131,6 +133,14 @@ function EntrustedManagement() {
         >
           委刊列表
         </SearchBar>
+        <SearchInput
+          className="md:hidden mb-5 w-full"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value.trim())}
+          placeholder="請輸入關鍵字"
+          btnText="搜尋"
+          onConfirm={handleSearch}
+        />
         <Table
           columns={columns}
           dataSource={data}

@@ -99,18 +99,17 @@ export default {
         '4xl': '60px',
         '5xl': '72px'
       },
-      screens: {
-        xs: '375px', // 超小手機
-        sm: '500px', // 普通手機
-        md: '768px', // 平板
-        lg: '1024px', // 筆記型電腦
-        xl: '1440px', // 桌面顯示器
-        '2xl': '1920px' // 超大桌面
-      },
+      // screens: {
+      //   sm: '576px', // 普通手機
+      //   md: '768px', // 平板
+      //   lg: '1200px', // 筆記型電腦
+      //   xl: '1440px', // 桌面顯示器
+      //   '2xl': '1920px' // 超大桌面
+      // },
       container: {
         center: true,
         padding: {
-          DEFAULT: '16px'
+          DEFAULT: '12px'
           // md: '20px'
         },
         screens: {

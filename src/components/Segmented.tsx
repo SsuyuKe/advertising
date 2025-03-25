@@ -3,7 +3,7 @@ import { Segmented } from 'antd'
 
 interface Props {
   className: string
-  options: (string | number)[]
+  options: (string | number)[] | { value: string; icon: React.ReactNode }[]
   value: string | number
   onChange: (value: string | number) => void
 }

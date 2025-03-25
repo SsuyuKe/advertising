@@ -4,6 +4,7 @@ import Input from '@/components/Input'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string
+  btnText?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   onConfirm: () => void
@@ -12,6 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const SearchInput: React.FC<Props> = ({
   value,
+  btnText = '確認',
   onChange,
   placeholder = '',
   onConfirm,
@@ -29,14 +31,14 @@ const SearchInput: React.FC<Props> = ({
         <Input
           placeholder={placeholder}
           value={value}
-          className="!rounded-6px !w-64 !placeholder:text-sm !py-2 !px-10px !text-sm"
+          className="!rounded-6px flex-1 md:flex-auto md:w-64 !placeholder:text-sm !py-2 !px-10px !text-sm"
           onChange={onChange}
         />
         <Button
           onClick={onConfirm}
           className="bg-primary text-white px-4 py-6px rounded-10px ml-2 font-bold text-sm"
         >
-          確認
+          {btnText}
         </Button>
         {children}
       </div>

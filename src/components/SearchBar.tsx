@@ -50,7 +50,7 @@ const SearchBar = ({
       )}
       <p className="text-center flex-1">{children}</p>
       {showSearch && (
-        <div className="flex items-center text-sm">
+        <div className="hidden md:flex items-center text-sm">
           <Input
             placeholder={placeholder}
             value={keyword}

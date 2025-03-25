@@ -6,3 +6,18 @@
   border: none;
   padding: 5px 10px;
 }
+.ad-date-picker {
+  max-width: 90vw !important;
+  min-width: 280px !important;
+}
+// @media (max-width: 640px) {
+//   .mobile-date-picker-dropdown {
+//     width: 90vw !important;
+//     max-width: 90vw !important;
+//     left: 5% !important; /* Center the dropdown */
+//   }
+
+//   .ant-picker-dropdown-range {
+//     width: 100% !important;
+//   }
+// }

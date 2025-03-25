@@ -205,6 +205,7 @@ function Home() {
   const handleCenter = (item: google.maps.places.PlaceResult) => {
     setCenter(item)
     setDistance(5)
+    setIsSidebarOpen(false)
     setSelectedDevice(null)
     // TODO: 確保更新標記的圖標 => 確認新的搜尋結果有匹配到地圖圖標
   }
@@ -260,7 +261,7 @@ function Home() {
 
   return (
     <>
-      <div className="relative h-[calc(100vh-60px)]">
+      <div className="relative h-[calc(100vh-68px)] md:h-[calc(100vh-60px)]">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={
@@ -353,7 +354,7 @@ function Home() {
         </GoogleMap>
         {!isSidebarOpen ? (
           <div
-            className="absolute top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
+            className="absolute top-[124px] md:top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
             onClick={() => setIsSidebarOpen(true)}
           >
             {Array.from({ length: 3 }, (value, index) => index).map(
@@ -363,7 +364,7 @@ function Home() {
             )}
           </div>
         ) : (
-          <div className="absolute top-4 left-4 bg-white rounded-10px w-80">
+          <div className="absolute top-[124px] md:top-4 left-4 bg-white rounded-10px w-80">
             <h2 className="flex items-center justify-between px-5 py-3 border-b border-solid border-purple-400">
               <p className="text-xl text-purple-200 font-bold">搜尋關鍵字</p>
               <button
@@ -438,9 +439,9 @@ function Home() {
             </div>
           </div>
         )}
-        <div className="absolute top-4 left-1/2  -translate-x-1/2 flex flex-col gap-2 z-50">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50 w-full md:w-auto px-3 md:px-0">
           {/* 搜尋欄 */}
-          <div className="flex bg-white shadow-common w-[342px] rounded-10px p-2 gap-2">
+          <div className="flex bg-white shadow-common w-full md:w-[342px] rounded-10px p-2 gap-2">
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

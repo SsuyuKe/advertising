@@ -32,12 +32,14 @@ function PointsManagement() {
     <div className="pt-4 pb-14">
       <div className="container">
         <SearchBar className="mb-5">點數管理</SearchBar>
-        <Segmented
-          className="!bg-purple-100 !text-title font-bold !mb-7"
-          options={options}
-          value={option}
-          onChange={handleChangeOption}
-        />
+        <div className="flex justify-center md:justify-start !mb-7">
+          <Segmented
+            className="!bg-purple-100 !text-title font-bold"
+            options={options}
+            value={option}
+            onChange={handleChangeOption}
+          />
+        </div>
         {/* {!materialList.length ? (
           <Loading size="large" />
         ) : option === '紀錄' ? (
@@ -50,7 +52,7 @@ function PointsManagement() {
         ) : (
           <>
             <div className="shadow-common rounded-xl bg-white px-9 py-8 mb-7">
-              <div className="flex gap-9">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-9">
                 <div className="flex-1 flex flex-col gap-5">
                   <div className="flex items-center font-bold text-primary-title">
                     <Image
@@ -70,11 +72,11 @@ function PointsManagement() {
                   </div>
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center">
-                      <label className="font-bold text-primary-title mr-5">
+                      <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                         單點價格
                       </label>
                       <Input
-                        className="flex-1"
+                        className="w-full !min-w-0"
                         value={unitPrice.toString()}
                         onChange={(e) =>
                           setUnitPrice(
@@ -86,11 +88,11 @@ function PointsManagement() {
                     </div>
                     <div>
                       <div className="flex items-center mb-10px">
-                        <label className="font-bold text-primary-title mr-5">
+                        <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                           購買點數
                         </label>
                         <Input
-                          className="flex-1"
+                          className="w-full !min-w-0"
                           type="number"
                           max={3000}
                           min={0}
@@ -108,11 +110,11 @@ function PointsManagement() {
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <label className="font-bold text-primary-title mr-5">
+                      <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                         贈送點數
                       </label>
                       <Input
-                        className="flex-1"
+                        className="w-full !min-w-0"
                         value={givePoint.toString()}
                         onChange={(e) =>
                           setGivePoint(
@@ -124,13 +126,13 @@ function PointsManagement() {
                     </div>
                     <div>
                       <div className="flex items-center mb-10px">
-                        <label className="font-bold text-primary-title mr-5">
+                        <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                           購買金額
                           <br />
                           (含稅)
                         </label>
                         <Input
-                          className="flex-1"
+                          className="w-full !min-w-0"
                           value={price.toString()}
                           onChange={(e) =>
                             setPrice(
@@ -145,24 +147,24 @@ function PointsManagement() {
                       </p>
                     </div>
                     <div className="flex items-center">
-                      <label className="font-bold text-primary-title mr-5">
+                      <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                         發票抬頭
                       </label>
                       <Input
-                        className="flex-1"
+                        className="w-full !min-w-0"
                         value={receipt}
                         onChange={(e) => setReceipt(e.target.value)}
                         placeholder="請輸入發票抬頭"
                       />
                     </div>
                     <div className="flex items-center">
-                      <label className="font-bold text-primary-title mr-5">
+                      <label className="font-bold text-primary-title mr-5 whitespace-nowrap">
                         發票寄送
                         <br />
                         (Email)
                       </label>
                       <Input
-                        className="flex-1"
+                        className="w-full !min-w-0"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="請輸入Email"

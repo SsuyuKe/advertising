@@ -109,7 +109,7 @@ const ImageUpload = () => {
       <h3 className="text-primary-title font-bold text-center mb-18px">
         預覽區
       </h3>
-      <div className="flex flex-col justify-center items-center bg-input rounded-6px flex-1 py-4">
+      <div className="flex flex-col justify-center items-center bg-input rounded-6px py-4 min-h-[372px] md:flex-1">
         <div className="w-full h-full flex flex-col">
           <div className="flex-1 relative">
             {imageInfo.cropped && (
@@ -155,8 +155,8 @@ const ImageUpload = () => {
   }
   return (
     <div className="flex flex-col gap-7">
-      <div className="flex flex-col px-14 pt-9 pb-6 bg-white rounded-xl shadow-common">
-        <div className="grid grid-cols-2 gap-9 mb-3">
+      <div className="flex flex-col p-5 md:p-9 bg-white rounded-xl shadow-common">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-9 mb-3">
           <div className="flex flex-col">
             <h3 className="text-primary-title font-bold mb-18px">
               素材限制：

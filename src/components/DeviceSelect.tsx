@@ -1,4 +1,5 @@
 import Segmented from '@/components/Segmented'
+import Image from 'next/image'
 import DateRangePicker from '@/components/DateRangePicker'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import { format } from 'date-fns'
@@ -6,6 +7,7 @@ import DeviceSelectTable from '@/components/table/DeviceSelectTable'
 import DeviceMap from '@/components/DeviceMap'
 
 const options = ['搜尋', '地圖']
+
 interface DateRange {
   startDate: Date | null
   endDate: Date | null
@@ -18,6 +20,37 @@ const DeviceSelect = () => {
     startDate: null,
     endDate: null
   })
+
+  const iconOptions = useMemo(
+    () => [
+      {
+        value: '搜尋',
+        icon: (
+          <Image
+            width={24}
+            height={24}
+            className="object-contain"
+            src={`/icons/${modeOption === '搜尋' ? 'list' : 'list-gray'}.svg`}
+            alt="list"
+          />
+        )
+      },
+      {
+        value: '地圖',
+        icon: (
+          <Image
+            width={24}
+            height={24}
+            className="object-contain"
+            src={`/icons/map-pin-area-${modeOption === '地圖' ? 'white' : 'gray'}.svg`}
+            alt="map-gray"
+          />
+        )
+      }
+    ],
+    [modeOption]
+  )
+
   const handleModeChange = (value: string | number) => {
     console.log(value)
     console.log(dateRange)
@@ -50,10 +83,19 @@ const DeviceSelect = () => {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center !mb-7">
-        <DateRangePicker onChange={handleDateRangeChange} />
+        <DateRangePicker
+          onChange={handleDateRangeChange}
+          popupClassName="ad-date-picker"
+        />
         <Segmented
-          className="!bg-purple-100 !text-title font-bold"
+          className="!bg-purple-100 !text-title font-bold hidden md:block"
           options={options}
+          value={modeOption}
+          onChange={handleModeChange}
+        />
+        <Segmented
+          className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
+          options={iconOptions}
           value={modeOption}
           onChange={handleModeChange}
         />

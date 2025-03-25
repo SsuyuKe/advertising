@@ -60,13 +60,14 @@ const DeviceSelectTable = () => {
   return (
     <div>
       <div className="bg-white shadow-common rounded-xl px-8 py-7">
-        <div className="flex gap-7 mb-8">
+        <div className="flex flex-col md:flex-row gap-7 mb-8">
           <div>
             <label className="block font-bold text-title pb-3">
               關鍵字搜尋
             </label>
             <Input
               value={keyword}
+              className="w-full md:w-auto"
               onChange={(e) => setKeyword(e.target.value)}
               placeholder="請輸入道路名稱"
             />
@@ -74,7 +75,7 @@ const DeviceSelectTable = () => {
           <div>
             <label className="block font-bold text-title pb-3">媒體通路</label>
             <Select
-              className="!w-[200px]"
+              className="w-full md:!min-w-[200px]"
               placeholder="請選擇"
               onChange={handleChange}
               options={[
@@ -86,7 +87,7 @@ const DeviceSelectTable = () => {
             />
           </div>
         </div>
-        <div className="flex gap-7">
+        <div className="flex flex-col md:flex-row gap-7">
           <div>
             <label className="block font-bold text-title pb-3">區域</label>
             <div className="flex items-center gap-3">
@@ -118,7 +119,7 @@ const DeviceSelectTable = () => {
           <div>
             <label className="block font-bold text-title pb-3">秒數</label>
             <Input
-              className="w-[150px]"
+              className="w-full md:min-w-[150px]"
               value={second.toString()}
               onChange={(e) => setSecond(Number(e.target.value))}
               placeholder="請輸入秒數"
@@ -148,17 +149,19 @@ const DeviceSelectTable = () => {
             onPageChange={(page) => setCurrentPage(page)}
           />
           {selectedRowKeys.length ? (
-            <div className="mb-6 flex justify-center relative">
-              <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg absolute left-0 top-1/2 -translate-y-1/2">
+            <div className="mb-6 flex flex-col md:flex-row">
+              <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
                 <span className="mr-3 font-bold">估計花費點數:</span>
                 <span className="text-purple-200">300</span>
               </div>
-              <Button
-                className="px-20 py-3 rounded-40px font-bold bg-primary"
-                onClick={handleAdvertise}
-              >
-                刊登廣告
-              </Button>
+              <div className="flex justify-center flex-1">
+                <Button
+                  className="px-20 py-3 rounded-40px font-bold bg-primary"
+                  onClick={handleAdvertise}
+                >
+                  刊登廣告
+                </Button>
+              </div>
             </div>
           ) : (
             ''

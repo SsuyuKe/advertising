@@ -84,6 +84,7 @@ const ATable: React.FC<Props> = ({
         itemRender: (current, type, originalElement) =>
           renderPagination(current, type, originalElement)
       }}
+      scroll={{ x: 'max-content' }}
     />
   )
 }

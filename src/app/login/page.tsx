@@ -103,9 +103,9 @@ function Login() {
     }
   }, [token])
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-60px)]">
+    <div className="flex items-center justify-center min-h-[calc(100vh-68px)] md:min-h-[calc(100vh-60px)] px-3">
       {contextHolder}
-      <div className="w-[366px] lg:w-[400px] p-8 bg-white rounded-20px shadow-common">
+      <div className="w-full md:w-[400px] p-8 bg-white rounded-20px shadow-common">
         <div className="flex justify-center mb-6">
           <Image
             width={65}
@@ -132,7 +132,7 @@ function Login() {
               <Input
                 value={rememberAccount || loginId}
                 onChange={(e) => setLoginId(e.target.value)}
-                // onBlur={() => validateField('loginId', loginId)}
+                onBlur={() => validateField('loginId', loginId)}
                 placeholder="請輸入手機或電子郵箱"
               />
               {errors.loginId && (

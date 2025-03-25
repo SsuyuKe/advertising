@@ -57,12 +57,14 @@ function MaterialManagement() {
           >
             {option}
           </SearchBar>
-          <Segmented
-            className="!bg-purple-100 !text-title font-bold !mb-7"
-            options={options}
-            value={option}
-            onChange={handleChangeOption}
-          />
+          <div className="flex justify-center md:justify-start !mb-7">
+            <Segmented
+              className="!bg-purple-100 !text-title font-bold"
+              options={options}
+              value={option}
+              onChange={handleChangeOption}
+            />
+          </div>
           {!materialList.length ? (
             <Loading size="large" />
           ) : option === '素材清單' ? (

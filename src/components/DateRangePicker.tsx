@@ -5,6 +5,7 @@ import type { RangePickerProps } from 'antd/es/date-picker'
 
 interface Props {
   className?: string
+  popupClassName?: string
   onChange?: (value: RangePickerProps['value']) => void
 }
 
@@ -17,7 +18,11 @@ const disabledDate: RangePickerProps['disabledDate'] = (current) => {
   return current && isBefore(current.toDate(), todayEnd)
 }
 
-const DateRangePicker: React.FC<Props> = ({ className, onChange }) => {
+const DateRangePicker: React.FC<Props> = ({
+  className,
+  popupClassName,
+  onChange
+}) => {
   return (
     <ConfigProvider
       theme={{
@@ -29,9 +34,11 @@ const DateRangePicker: React.FC<Props> = ({ className, onChange }) => {
     >
       <RangePicker
         className={clsx(className)}
+        popupClassName={popupClassName}
         placeholder={['開始日期', '結束日期']}
         disabledDate={disabledDate}
         onChange={onChange}
+        placement="bottomLeft"
       />
     </ConfigProvider>
   )

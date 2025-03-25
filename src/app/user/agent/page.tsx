@@ -10,9 +10,9 @@ function Agent() {
     <div className="pt-4 pb-14">
       <div className="container">
         <SearchBar className="mb-5">設定代理人</SearchBar>
-        <div className="bg-white rounded-xl shadow-common py-9 flex flex-col items-center gap-6">
+        <div className="bg-white rounded-xl shadow-common px-3 md:px-0 py-9 flex flex-col items-center gap-6">
           <Input
-            className="w-[436px]"
+            className="w-full md:w-[436px]"
             value={account}
             onChange={(e) => setAccount(e.target.value)}
             placeholder="請輸入代理人帳號(手機或Email...)"
