@@ -200,14 +200,14 @@ const ImageUpload = () => {
       </div>
       <div className="flex justify-center gap-9">
         <Button
-          className="rounded-40px py-4 px-14 font-bold bg-primary disabled:bg-disabled"
+          className="whitespace-nowrap rounded-40px py-4 w-1/2 font-bold bg-primary disabled:bg-disabled"
           disabled={!imageInfo.src}
           onClick={handleCrop}
         >
           剪裁並預覽
         </Button>
         <Button
-          className="rounded-40px py-4 px-14 font-bold bg-primary disabled:bg-disabled"
+          className="whitespace-nowrap rounded-40px py-4 px-10 w-1/2 font-bold bg-primary disabled:bg-disabled"
           disabled={!imageInfo.src}
           onClick={handleUpload}
         >

@@ -13,7 +13,6 @@ import Message from '@/components/Message'
 import Loading from '@/components/Loading'
 import { Slider, Skeleton } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Pagination from '@/components/Pagination'
 import { debounce } from '@/utils/common'
 import { useMessage } from '@/lib/hooks/useMessage'
 import { getDeviceNearby } from '@/api/module/device'
@@ -41,7 +40,6 @@ const containerStyle = {
   height: 'calc(100vh - 212px)'
 }
 
-const PAGE_SIZE = 5
 const pageSize = 10 // 每頁顯示數量
 
 // 將 API 載入邏輯移到組件外部
@@ -68,8 +66,6 @@ const DeviceMap = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [hasMore, setHasMore] = useState<boolean>(false) // 是否還有更多數據可以加載
   const { message, showMessage, closeMessage } = useMessage()
-
-  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const debouncedFetchRef = useRef<
     ((place: google.maps.places.PlaceResult) => void) | null
@@ -512,44 +508,19 @@ const DeviceMap = () => {
         </div>
         <div className="absolute left-1/2 md:left-auto -translate-x-1/2 md:-translate-x-0 bottom-24 md:right-4 md:bottom-8">
           {selectedDevices.length ? (
-            <>
-              <div className="flex justify-end">
-                <Pagination
-                  className="mb-3"
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(selectedDevices.length / PAGE_SIZE)}
-                  onPrev={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  onNext={() =>
-                    setCurrentPage((prev) =>
-                      Math.min(
-                        prev + 1,
-                        Math.ceil(selectedDevices.length / PAGE_SIZE)
-                      )
-                    )
-                  }
-                />
-              </div>
-              <div className="flex justify-between items-center mb-3">
-                <p className="font-bold">
-                  已選擇{' '}
-                  <span className="text-primary">{selectedDevices.length}</span>{' '}
-                  筆
-                </p>
-                <p className="font-bold">
-                  共 {Math.ceil(selectedDevices.length / PAGE_SIZE)} 頁
-                </p>
-              </div>
-            </>
+            <p className="font-bold mb-3 text-right">
+              已選擇{' '}
+              <span className="text-primary">{selectedDevices.length}</span> 筆
+            </p>
           ) : (
             ''
           )}
-          <ul className="mb-2">
-            {selectedDevices
-              .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-              .map((device) => (
+          {selectedDevices.length ? (
+            <ul className="mb-2 bg-white shadow-common rounded-xl w-80 h-[250px] md:h-[360px] overflow-y-auto">
+              {selectedDevices.map((device) => (
                 <li
                   key={device.deviceId}
-                  className="flex items-center py-3 md:py-4 px-5 bg-white shadow-common rounded-xl mb-2 last:mb-0 w-80"
+                  className="flex items-center py-3 md:py-4 px-5"
                 >
                   <button
                     onClick={() => handleDeviceClick(device)}
@@ -567,7 +538,10 @@ const DeviceMap = () => {
                   <span className="text-purple-200 flex-1">{device.name}</span>
                 </li>
               ))}
-          </ul>
+            </ul>
+          ) : (
+            ''
+          )}
           {/* TODO: 再更改 */}
           {selectedDevices.length ? (
             <div className="flex items-center py-3 md:py-4 px-5 bg-white shadow-common rounded-xl text-base md:text-xl">

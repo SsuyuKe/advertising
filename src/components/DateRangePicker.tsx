@@ -33,12 +33,16 @@ const DateRangePicker: React.FC<Props> = ({
       }}
     >
       <RangePicker
-        className={clsx(className)}
-        popupClassName={popupClassName}
+        className={clsx('responsive-range-picker', className)}
+        popupClassName={clsx('responsive-popup', popupClassName)}
         placeholder={['開始日期', '結束日期']}
         disabledDate={disabledDate}
         onChange={onChange}
         placement="bottomLeft"
+        getPopupContainer={(triggerNode) =>
+          triggerNode.parentElement || document.body
+        } // 防止浮层溢出
+        inputReadOnly={window.innerWidth < 768} // 移动端禁用键盘输入
       />
     </ConfigProvider>
   )
