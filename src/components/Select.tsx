@@ -7,7 +7,7 @@ interface Option {
 }
 
 interface Props {
-  className: string
+  className?: string
   options: Option[]
   placeholder: string
   onChange: (value: string | number) => void

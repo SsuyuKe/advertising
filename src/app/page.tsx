@@ -15,7 +15,7 @@ import MaterialSelect from '@/components/MaterialSelect'
 
 function Advertising() {
   const [mode, setMode] = useState('地圖')
-  const [isMaterialSelect, setIsMaterialSelect] = useState(false)
+  const [step, setStep] = useState(1)
   const handleModeChange = (value: string) => {
     setMode(value)
   }
@@ -25,15 +25,16 @@ function Advertising() {
         <DeviceMap
           onModeChange={handleModeChange}
           mode={mode}
-          onNext={() => setIsMaterialSelect(true)}
+          onNext={() => setStep(2)}
         />
       )
     } else if (mode === '搜尋') {
       return (
         <DeviceSelect
+          isFinish={false}
           onModeChange={handleModeChange}
           mode={mode}
-          onNext={() => setIsMaterialSelect(true)}
+          onNext={() => setStep(2)}
         />
       )
     }
@@ -41,13 +42,17 @@ function Advertising() {
 
   return (
     <>
-      {isMaterialSelect ? (
-        <MaterialSelect
-          onNext={() => setIsMaterialSelect(false)}
-          onPrev={() => setIsMaterialSelect(false)}
+      {step === 1 && renderDeviceSelect()}
+      {step === 2 && (
+        <MaterialSelect onNext={() => setStep(3)} onPrev={() => setStep(1)} />
+      )}
+      {step === 3 && (
+        <DeviceSelect
+          isFinish={true}
+          onModeChange={handleModeChange}
+          mode={mode}
+          onNext={() => setStep(1)}
         />
-      ) : (
-        renderDeviceSelect()
       )}
     </>
   )

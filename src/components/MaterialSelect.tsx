@@ -9,6 +9,7 @@
 // TODO: 日曆樣式要修正
 // TODO: 要加型別
 
+import Input from '@/components/Input'
 import SearchBar from '@/components/SearchBar'
 import SearchInput from '@/components/SearchInput'
 import Pagination from '@/components/Pagination'
@@ -33,6 +34,7 @@ function MaterialSelect({ onPrev, onNext }: Props) {
   const [totalPages, setTotalPages] = useState(1)
   const [materialList, setMaterialList] = useState<MaterialItem[]>([])
   const [selectedMaterial, setSelectedMaterial] = useState<number | string>('')
+  const [name, setName] = useState('')
 
   const handleMaterialList = async () => {
     const data = await getMaterialList()
@@ -59,21 +61,36 @@ function MaterialSelect({ onPrev, onNext }: Props) {
       <div className="container">
         <SearchBar
           className="mb-5"
-          placeholder="請輸入關鍵字"
           onSearch={handleSearch}
           onPrev={onPrev}
-          showSearch
           showPrev
         >
           選擇素材
         </SearchBar>
-        <SearchInput
-          className="mb-5 hidden md:inline-block"
-          value={advertisingName}
-          onChange={(e) => setAdvertisingName(e.target.value.trim())}
-          placeholder="請輸入廣告活動名稱"
-          onConfirm={handleAdvertisingName}
-        />
+        <div className="flex justify-between items-start">
+          <SearchInput
+            className="mb-5 hidden md:inline-block"
+            value={advertisingName}
+            onChange={(e) => setAdvertisingName(e.target.value.trim())}
+            placeholder="請輸入關鍵字"
+            btnText="搜尋"
+            onConfirm={handleAdvertisingName}
+          />
+          <Button className="rounded-xl px-10 py-3 font-bold" onClick={onNext}>
+            下一步
+          </Button>
+        </div>
+        <div className="hidden md:flex items-center text-sm mb-5 bg-white rounded-xl p-2 gap-[30px]">
+          <h3 className="text-[18px] font-bold text-nowrap pl-6">
+            廣告活動名稱
+          </h3>
+          <Input
+            placeholder="請輸入廣告活動名稱"
+            value={name}
+            className="!rounded-6px w-full !placeholder:text-sm !py-2 !px-10px !text-sm"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <div className="mb-4 flex md:hidden items-center justify-between">
           {isSearch ? (
             <SearchInput
@@ -133,13 +150,6 @@ function MaterialSelect({ onPrev, onNext }: Props) {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
               />
-              <Button
-                className="px-20 py-4 rounded-40px font-bold"
-                disabled={!selectedMaterial || !advertisingName}
-                onClick={onNext}
-              >
-                下一步
-              </Button>
             </div>
           </>
         )}

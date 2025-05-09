@@ -4,11 +4,13 @@ import DateRangePicker from '@/components/DateRangePicker'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import { format } from 'date-fns'
 import DeviceSelectTable from '@/components/table/DeviceSelectTable'
+import DeviceSelectTableFinish from './table/DeviceSelectTableFinish'
 
 const options = ['搜尋', '地圖']
 type Props = {
   onModeChange: (mode: string) => void
   mode: string
+  isFinish: boolean
   onNext: () => void
 }
 
@@ -17,7 +19,7 @@ interface DateRange {
   endDate: Date | null
 }
 
-const DeviceSelect = ({ onModeChange, mode, onNext }: Props) => {
+const DeviceSelect = ({ onModeChange, mode, onNext, isFinish }: Props) => {
   const [modeOption, setModeOption] = useState(mode)
   // const [selectedMaterial, setSelectedMaterial] = useState<number | string>('')
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -73,8 +75,8 @@ const DeviceSelect = ({ onModeChange, mode, onNext }: Props) => {
       console.log('開始日期:', format(startDate, 'yyyy-MM-dd'))
       console.log('結束日期:', format(endDate, 'yyyy-MM-dd'))
     } else {
-      // 當使用者清除日期選擇時
       setDateRange({
+        // 當使用者清除日期選擇時
         startDate: null,
         endDate: null
       })
@@ -83,25 +85,31 @@ const DeviceSelect = ({ onModeChange, mode, onNext }: Props) => {
   return (
     <div className="container pt-4">
       <div className="flex flex-col">
-        <div className="flex justify-between items-center !mb-7">
-          <DateRangePicker
-            onChange={handleDateRangeChange}
-            popupClassName="ad-date-picker"
-          />
-          <Segmented
-            className="!bg-purple-100 !text-title font-bold hidden md:block"
-            options={options}
-            value={modeOption}
-            onChange={(val) => handleModeChange(val as string)}
-          />
-          <Segmented
-            className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
-            options={iconOptions}
-            value={modeOption}
-            onChange={(val) => handleModeChange(val as string)}
-          />
-        </div>
-        <DeviceSelectTable onNext={onNext} />
+        {!isFinish && (
+          <div className="flex justify-between items-center !mb-7">
+            <DateRangePicker
+              onChange={handleDateRangeChange}
+              popupClassName="ad-date-picker"
+            />
+            <Segmented
+              className="!bg-purple-100 !text-title font-bold hidden md:block"
+              options={options}
+              value={modeOption}
+              onChange={(val) => handleModeChange(val as string)}
+            />
+            <Segmented
+              className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
+              options={iconOptions}
+              value={modeOption}
+              onChange={(val) => handleModeChange(val as string)}
+            />
+          </div>
+        )}
+        {isFinish ? (
+          <DeviceSelectTableFinish />
+        ) : (
+          <DeviceSelectTable onNext={onNext} />
+        )}
       </div>
     </div>
   )

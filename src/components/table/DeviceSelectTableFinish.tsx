@@ -1,54 +1,51 @@
 import Table from '@/components/Table'
-import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Select from '@/components/Select'
 import type { TableColumnsType } from 'antd'
 import type { TableProps, TablePaginationConfig } from 'antd/es/table'
 import { DataSource } from '@/types/components/table'
+import { Tag } from 'antd'
 
 const dataSource = Array.from({ length: 46 }).map((_, i) => {
+  const state = Math.random() > 0.5 ? '符合' : '不符合'
   return {
     key: i,
     device: `設備00${i}`,
     seconds: i,
     address: `台北市${i}號`,
-    channel: '東森'
+    channel: '東森',
+    state
   }
 })
-const defaultSelectedKeys = dataSource.map((item) => item.key)
+const defaultSelectedKeys = dataSource
+  .filter((item) => item.state === '符合')
+  .map((item) => item.key)
 
 const columns: TableColumnsType<DataSource> = [
+  {
+    title: '狀態',
+    dataIndex: 'state',
+    render: (_, { state }) => (
+      <Tag color={state === '符合' ? 'green' : 'red'}>{state}</Tag>
+    )
+  },
   { title: '設備名稱', dataIndex: 'device' },
   { title: '東森', dataIndex: 'channel' },
   { title: '地址', dataIndex: 'address' },
   { title: '剩餘秒數', dataIndex: 'seconds' }
 ]
 
-type Props = {
-  onNext: () => void
-}
-
-const DeviceSelectTable = ({ onNext }: Props) => {
+const DeviceSelectTableFinish = () => {
   const [keyword, setKeyword] = useState('')
   const [selectedRowKeys, setSelectedRowKeys] =
     useState<React.Key[]>(defaultSelectedKeys)
-  const [isSearch, setIsSearch] = useState(false)
   const [second, setSecond] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
   const handleChange = (value: string | number) => {
     console.log(`selected ${value}`)
-  }
-  const handleSearch = () => {
-    setIsSearch(true)
-    console.log('搜尋')
-  }
-
-  const handleNext = () => {
-    // TODO: for eslint
-    setPageSize(100)
-    onNext()
+    setPageSize(10)
   }
 
   const rowSelection: TableProps<DataSource>['rowSelection'] = {
@@ -150,47 +147,28 @@ const DeviceSelectTable = ({ onNext }: Props) => {
           </div>
         </div>
       </div>
-      <div className="py-8 flex justify-center">
-        <Button
-          className="px-20 py-3 rounded-40px font-bold bg-primary"
-          // disabled={!selectedMaterial}
-          onClick={handleSearch}
-        >
-          搜尋
-        </Button>
-      </div>
-      {isSearch && (
-        <div>
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={dataSource}
-            pageSize={pageSize}
-            total={dataSource.length}
-            current={currentPage}
-            onChange={handleTableChange}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-          {selectedRowKeys.length !== 0 && (
-            <div className="mb-6 flex flex-col md:flex-row">
-              <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
-                <span className="mr-3 font-bold">估計花費點數:</span>
-                <span className="text-purple-200">300</span>
-              </div>
-              <div className="flex justify-center flex-1">
-                <Button
-                  className="px-20 py-3 rounded-40px font-bold bg-primary"
-                  onClick={handleNext}
-                >
-                  下一步
-                </Button>
-              </div>
+      <div>
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={dataSource}
+          pageSize={pageSize}
+          total={dataSource.length}
+          current={currentPage}
+          onChange={handleTableChange}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+        {selectedRowKeys.length !== 0 && (
+          <div className="mb-6 flex flex-col md:flex-row">
+            <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
+              <span className="mr-3 font-bold">估計花費點數:</span>
+              <span className="text-purple-200">300</span>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
 
-export default DeviceSelectTable
+export default DeviceSelectTableFinish

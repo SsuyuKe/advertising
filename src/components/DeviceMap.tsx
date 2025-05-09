@@ -287,7 +287,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
                 lng: selectedDevice.lng
               }}
               options={{
-                pixelOffset: new window.google.maps.Size(0, -40), // 調整這個值來控制偏移量
+                pixelOffset: new window.google.maps.Size(0, -40),
                 disableAutoPan: true
               }}
               onCloseClick={() => setSelectedDevice(null)}
