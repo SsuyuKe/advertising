@@ -1,30 +1,27 @@
 'use client'
-
-import {
-  GoogleMap,
-  useJsApiLoader,
-  MarkerF,
-  InfoWindow
-} from '@react-google-maps/api'
+import { format } from 'date-fns'
+import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api'
 import Image from 'next/image'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
 import Message from '@/components/Message'
+import Select from '@/components/Select'
 import Loading from '@/components/Loading'
 import { Slider, Skeleton } from 'antd'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { debounce } from '@/utils/common'
-import { useMessage } from '@/lib/hooks/useMessage'
-import { getDeviceNearby } from '@/api/module/device'
+import DateRangePicker from '@/components/DateRangePicker'
+import Segmented from '@/components/Segmented'
+import type { RangePickerProps } from 'antd/es/date-picker'
 import { DeviceItem } from '@/types/api/device'
+
 import {
+  useMap,
   defaultCenter,
-  LIBRARIES,
   circleOptions,
   mapOptions,
-  getApiLanguage,
   createIcon
-} from '@/utils/mapConfig'
+} from '@/lib/hooks/useMap'
 
 // TODO: 選擇的地點要用紫色框線標記
 // TODO: sidebar搜尋結果載入效果
@@ -37,165 +34,63 @@ import {
 
 const containerStyle = {
   width: '100%',
-  height: 'calc(100vh - 212px)'
+  height: 'calc(100vh - 60px)'
 }
 
-const pageSize = 10 // 每頁顯示數量
+type Props = {
+  onModeChange: (mode: string) => void
+  mode: string
+  onNext: () => void
+}
 
+interface DateRange {
+  startDate: Date | null
+  endDate: Date | null
+}
+const options = ['搜尋', '地圖']
 // 將 API 載入邏輯移到組件外部
-const DeviceMap = () => {
-  const [map, setMap] = useState<google.maps.Map | null>(null)
-  const [distance, setDistance] = useState(5)
-  const [searchQuery, setSearchQuery] = useState('')
+const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
   const [center, setCenter] = useState<google.maps.places.PlaceResult | null>(
     null
   )
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
-  // 存儲所有地點數據
-  const [allPlaces, setAllPlaces] = useState<google.maps.places.PlaceResult[]>(
-    []
-  )
-  const [displayedPlaces, setDisplayedPlaces] = useState<
-    google.maps.places.PlaceResult[]
-  >([]) // 當前顯示的地點
-  // 搜尋
-  const [allDevices, setAllDevices] = useState<DeviceItem[]>([])
-  const [selectedDevices, setSelectedDevices] = useState<DeviceItem[]>([])
-  const [selectedDevice, setSelectedDevice] = useState<DeviceItem | null>(null)
+  const [isAdvanced, setIsAdvanced] = useState(false)
 
-  const [loading, setLoading] = useState<boolean>(false)
-  const [hasMore, setHasMore] = useState<boolean>(false) // 是否還有更多數據可以加載
-  const { message, showMessage, closeMessage } = useMessage()
+  const [modeOption, setModeOption] = useState(mode)
+  // const [selectedMaterial, setSelectedMaterial] = useState<number | string>('')
+  const [dateRange, setDateRange] = useState<DateRange>({
+    startDate: null,
+    endDate: null
+  })
 
   const debouncedFetchRef = useRef<
     ((place: google.maps.places.PlaceResult) => void) | null
   >(null)
 
-  const userLanguage = navigator.language || 'zh-TW'
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    libraries: LIBRARIES
-  })
-
-  const onLoad = useCallback(
-    (mapInstance: google.maps.Map) => {
-      setMap(mapInstance)
-
-      mapInstance.addListener('click', (event: google.maps.MapMouseEvent) => {
-        if (!event.latLng) {
-          return
-        }
-
-        let clickedOurMarker = false
-        for (let i = 0; i < allPlaces.length; i++) {
-          const place = allPlaces[i]
-          if (!place.geometry || !place.geometry.location) continue
-
-          const markerPosition = {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng()
-          }
-          const distance = Math.sqrt(
-            Math.pow(event.latLng.lat() - markerPosition.lat, 2) +
-              Math.pow(event.latLng.lng() - markerPosition.lng, 2)
-          )
-          if (distance < 0.0001) {
-            clickedOurMarker = true
-            break
-          }
-        }
-
-        if (!clickedOurMarker) {
-          event.stop()
-        }
-      })
-    },
-    [allPlaces]
-  )
-
-  const onUnmount = useCallback(() => {
-    setMap(null) // 確保地圖資源釋放
-  }, [])
-
-  const fetchPlaces = useCallback(() => {
-    if (!map) return
-    if (!searchQuery) {
-      showMessage('請輸入地點名稱')
-      return
-    }
-
-    setLoading(true)
-    setSelectedDevices([])
-    const service = new window.google.maps.places.PlacesService(map)
-    const request = {
-      query: searchQuery,
-      region: 'tw',
-      language: getApiLanguage(userLanguage)
-    }
-    service.textSearch(request, (results, status) => {
-      setLoading(false)
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setAllPlaces(results ?? [])
-        setDisplayedPlaces((results ?? []).slice(0, pageSize))
-        setHasMore((results ?? []).length > pageSize)
-      } else {
-        setAllPlaces([])
-        setDisplayedPlaces([])
-        setHasMore(false)
-      }
-      setIsSidebarOpen(true)
-    })
-  }, [map, searchQuery, userLanguage, showMessage])
-
-  const fetchNearbyDevices = useCallback(
-    async (userPlace: google.maps.places.PlaceResult) => {
-      if (!map || !userPlace) return
-
-      if (!userPlace.geometry || !userPlace.geometry.location) {
-        return
-      }
-
-      const location = {
-        lat: userPlace.geometry.location.lat(),
-        lng: userPlace.geometry.location.lng()
-      }
-
-      setLoading(true)
-      try {
-        const data = await getDeviceNearby({
-          ...location,
-          radius: distance * 1000
-        })
-        if (data.length) {
-          setSelectedDevices(data ?? [])
-          setAllDevices(data ?? [])
-        } else {
-          setSelectedDevices([])
-          setAllDevices([])
-          showMessage('範圍內沒有相符的設備！')
-        }
-      } catch (err) {
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    },
-    [map, distance]
-  )
-
-  const loadMoreData = () => {
-    if (loading || !hasMore) return
-    setLoading(true)
-    setTimeout(() => {
-      const currentSize = displayedPlaces.length
-      const newPlaces = allPlaces.slice(0, currentSize + pageSize)
-      setDisplayedPlaces(newPlaces)
-      setHasMore(newPlaces.length < allPlaces.length)
-      setLoading(false)
-    }, 1000)
-  }
+  const {
+    isLoaded,
+    map,
+    fetchNearbyDevices,
+    loadMoreData,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    distance,
+    setDistance,
+    selectedDevice,
+    setSelectedDevice,
+    selectedDevices,
+    setSelectedDevices,
+    searchQuery,
+    setSearchQuery,
+    fetchPlaces,
+    allDevices,
+    message,
+    closeMessage,
+    onLoad,
+    onUnmount,
+    displayedPlaces,
+    allPlaces,
+    hasMore
+  } = useMap()
 
   // 當距離變化時，使用防抖函數，不是直接觸發API
   const handleDistanceChange = (value: number) => {
@@ -205,6 +100,11 @@ const DeviceMap = () => {
         debouncedFetchRef.current(center)
       }
     }
+  }
+
+  const handleChange = () => {
+    console.log(dateRange)
+    console.log('handleChange')
   }
 
   const handleCenter = (item: google.maps.places.PlaceResult) => {
@@ -276,6 +176,61 @@ const DeviceMap = () => {
     fetchNearbyDevices(center) // 以新位置為中心搜尋附近的結果
   }, [map, center, fetchNearbyDevices])
 
+  const iconOptions = useMemo(
+    () => [
+      {
+        value: '搜尋',
+        icon: (
+          <Image
+            width={24}
+            height={24}
+            className="object-contain"
+            src={`/icons/${modeOption === '搜尋' ? 'list' : 'list-gray'}.svg`}
+            alt="list"
+          />
+        )
+      },
+      {
+        value: '地圖',
+        icon: (
+          <Image
+            width={24}
+            height={24}
+            className="object-contain"
+            src={`/icons/map-pin-area-${modeOption === '地圖' ? 'white' : 'gray'}.svg`}
+            alt="map-gray"
+          />
+        )
+      }
+    ],
+    [modeOption]
+  )
+  const handleModeChange = (value: string) => {
+    onModeChange(value)
+    setModeOption(value as string)
+  }
+
+  const handleDateRangeChange = (dates: RangePickerProps['value']) => {
+    if (dates && dates[0] && dates[1]) {
+      // 將 Moment 物件轉換為 Date 物件
+      const startDate = dates[0].toDate()
+      const endDate = dates[1].toDate()
+      setDateRange({
+        startDate,
+        endDate
+      })
+      // 這裡可以加入你的業務邏輯
+      console.log('開始日期:', format(startDate, 'yyyy-MM-dd'))
+      console.log('結束日期:', format(endDate, 'yyyy-MM-dd'))
+    } else {
+      // 當使用者清除日期選擇時
+      setDateRange({
+        startDate: null,
+        endDate: null
+      })
+    }
+  }
+
   if (!isLoaded) return <Loading size="large" />
 
   return (
@@ -338,7 +293,7 @@ const DeviceMap = () => {
               onCloseClick={() => setSelectedDevice(null)}
             >
               <div className="flex flex-col items-center justify-center text-base">
-                <div className="flex items-center w-full border-b border-solid border-gray-400 pb-2">
+                <div className="flex items-center w-full pb-2">
                   <Image
                     width={16}
                     height={16}
@@ -350,7 +305,30 @@ const DeviceMap = () => {
                     設備名稱：{selectedDevice.name}
                   </h3>
                 </div>
+                <Image
+                  width={241}
+                  height={153}
+                  className="w-full h-[153px] object-contain rounded-[10px]"
+                  src="/images/device.png"
+                  alt="device"
+                />
                 <ul className="flex flex-col w-full font-bold">
+                  <li className="py-2 border-b border-solid border-gray-400 flex items-center gap-2">
+                    螢幕等級:
+                    <div className="flex">
+                      {Array.from({ length: 5 }, (_, idx) => idx + 1).map(
+                        (item) => (
+                          <Image
+                            key={item}
+                            width={20}
+                            height={20}
+                            src="/icons/star.svg"
+                            alt="star"
+                          />
+                        )
+                      )}
+                    </div>
+                  </li>
                   <li className="py-2 border-b border-solid border-gray-400">
                     地址: {selectedDevice.address}
                   </li>
@@ -358,13 +336,33 @@ const DeviceMap = () => {
                     媒體通路: {selectedDevice.address}
                   </li>
                   <li className="py-2 border-b border-solid border-gray-400">
-                    螢幕解析度: {selectedDevice.resolutionW}x
+                    尺寸: 100
+                  </li>
+                  <li className="py-2 border-b border-solid border-gray-400">
+                    解析度: {selectedDevice.resolutionW}x
                     {selectedDevice.resolutionH}
                   </li>
                   <li className="py-2 border-b border-solid border-gray-400">
-                    方向直/橫:{' '}
+                    比例: 16:9
                   </li>
-                  <li className="py-2">剩餘秒數: 秒</li>
+                  <li className="py-2 border-b border-solid border-gray-400">
+                    安裝年分: 2025
+                  </li>
+                  <li className="py-2 border-b border-solid border-gray-400">
+                    商圈: 信義商圈
+                  </li>
+                  <li className="py-2 border-b border-solid border-gray-400">
+                    室內/室外: 室內
+                  </li>
+                  <li className="py-2 border-b border-solid border-gray-400">
+                    人流分析: 兒童/青少年/上班族
+                  </li>
+                  <li className="py-2 flex flex-col">
+                    <p>設備位置:</p>
+                    <p>距離主幹道2公里</p>
+                    <p>距離捷運站0.5公里</p>
+                    <p>距離大型商場6公里</p>
+                  </li>
                 </ul>
                 <button
                   onClick={() => handleDeviceClick(selectedDevice)}
@@ -384,8 +382,9 @@ const DeviceMap = () => {
         <Button
           className="py-4 px-20 absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 rounded-40px whitespace-nowrap"
           disabled={!selectedDevices.length}
+          onClick={onNext}
         >
-          刊登廣告
+          下一步
         </Button>
         {!isSidebarOpen ? (
           <div
@@ -399,7 +398,7 @@ const DeviceMap = () => {
             )}
           </div>
         ) : (
-          <div className="absolute top-[124px] md:top-4 left-4 z-20 bg-white rounded-10px w-[calc(100%-32px)]">
+          <div className="absolute top-[124px] md:top-4 left-4 z-20 bg-white rounded-10px w-[calc(100%-32px)] md:w-[362px]">
             <h2 className="flex items-center justify-between px-5 py-3 border-b border-solid border-purple-400">
               <p className="text-xl text-purple-200 font-bold">搜尋關鍵字</p>
               <button
@@ -474,22 +473,63 @@ const DeviceMap = () => {
             </div>
           </div>
         )}
-        <div className="absolute top-4 left-1/2  -translate-x-1/2 flex flex-col gap-2 z-50">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50">
           {/* 搜尋欄 */}
-          <div className="flex bg-white shadow-common w-[342px] rounded-10px p-2 gap-2">
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="輸入城市名稱"
-              className="flex-1 p-2 text-black rounded-6px"
+          <div className="flex items-center gap-3">
+            <div className="flex bg-white shadow-common rounded-10px p-2 gap-2">
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="輸入城市名稱"
+                className="flex-1 text-black rounded-6px w-[254px]"
+              />
+              <Button
+                onClick={() => setIsAdvanced((prev) => !prev)}
+                className="px-4 py-6px rounded-10px text-sm bg-[#1D1D1D80] border-none"
+              >
+                進階條件
+              </Button>
+              <Button
+                onClick={fetchPlaces}
+                className="px-4 py-6px rounded-10px text-sm"
+              >
+                搜尋
+              </Button>
+            </div>
+            <DateRangePicker
+              className="map"
+              onChange={handleDateRangeChange}
+              popupClassName="ad-date-picker"
             />
-            <Button onClick={fetchPlaces} className="px-4 py-6px rounded-10px">
-              搜尋
-            </Button>
           </div>
+          {isAdvanced && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 bg-white py-5 px-4 rounded-xl">
+              {[
+                '尺寸',
+                '比例',
+                '安裝年份',
+                '商圈',
+                '室內/室外',
+                '人流',
+                '主幹道距離',
+                '捷運站距離',
+                '大型商場距離',
+                '星級',
+                '解析度'
+              ].map((label) => (
+                <Select
+                  key={label}
+                  className="flex-1"
+                  placeholder={label}
+                  onChange={handleChange}
+                  options={[{ label, value: label }]}
+                />
+              ))}
+            </div>
+          )}
           {/* 距離滑桿 */}
-          {center ? (
-            <div className="bg-black text-white py-6px px-4 rounded-[60px] shadow-md flex items-center gap-2">
+          {center !== null && (
+            <div className="bg-black text-white py-6px px-4 rounded-[60px] shadow-md flex items-center gap-2 w-[330px]">
               <Slider
                 min={1}
                 max={5}
@@ -502,20 +542,30 @@ const DeviceMap = () => {
               />
               <span>{distance.toFixed(1)} 公里</span>
             </div>
-          ) : (
-            ''
           )}
         </div>
+        <div className="absolute top-4 right-4">
+          <Segmented
+            className="!bg-purple-100 !text-title font-bold hidden md:block"
+            options={options}
+            value={modeOption}
+            onChange={(val) => handleModeChange(val as string)}
+          />
+          <Segmented
+            className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
+            options={iconOptions}
+            value={modeOption}
+            onChange={(val) => handleModeChange(val as string)}
+          />
+        </div>
         <div className="absolute left-1/2 md:left-auto -translate-x-1/2 md:-translate-x-0 bottom-24 md:right-4 md:bottom-8">
-          {selectedDevices.length ? (
+          {selectedDevices.length !== 0 && (
             <p className="font-bold mb-3 text-right">
               已選擇{' '}
               <span className="text-primary">{selectedDevices.length}</span> 筆
             </p>
-          ) : (
-            ''
           )}
-          {selectedDevices.length ? (
+          {selectedDevices.length !== 0 && (
             <ul className="mb-2 bg-white shadow-common rounded-xl w-80 h-[250px] md:h-[360px] overflow-y-auto">
               {selectedDevices.map((device) => (
                 <li
@@ -539,17 +589,13 @@ const DeviceMap = () => {
                 </li>
               ))}
             </ul>
-          ) : (
-            ''
           )}
           {/* TODO: 再更改 */}
-          {selectedDevices.length ? (
+          {selectedDevices.length !== 0 && (
             <div className="flex items-center py-3 md:py-4 px-5 bg-white shadow-common rounded-xl text-base md:text-xl">
               <span className="mr-3 font-bold">估計花費點數:</span>
               <span className="text-purple-200">300</span>
             </div>
-          ) : (
-            ''
           )}
         </div>
       </div>

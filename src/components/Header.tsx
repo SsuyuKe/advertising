@@ -14,32 +14,17 @@ import Sidebar from '@/components/Sidebar'
 
 type MenuItem = {
   title: string
-  href?: string
-  menuTitle?: string
-  prefix?: string
-  items?: MenuProps['items']
+  href: string
 }
 
 const MENU_CONFIG: MenuItem[] = [
   {
-    title: '首頁',
+    title: '上刊廣告',
     href: '/'
   },
   {
-    title: '推播廣告',
-    prefix: '/device-advertising',
-    items: [
-      {
-        key: '1',
-        label: <Link href="/device-advertising/advertising">上刊廣告</Link>
-      },
-      {
-        key: '2',
-        label: (
-          <Link href="/device-advertising/entrusted-management">委刊列表</Link>
-        )
-      }
-    ]
+    title: '委刊列表',
+    href: '/entrusted-management'
   },
   {
     title: '素材管理',
@@ -92,17 +77,15 @@ function Header() {
       <header className="bg-white py-3 md:py-0">
         <div className="container">
           <div className="flex justify-between items-center">
-            <div>
-              <Link href="/">
-                <Image
-                  src="/images/logo.png"
-                  alt="logo"
-                  width={133}
-                  height={44}
-                  priority
-                />
-              </Link>
-            </div>
+            <Link href="/">
+              <Image
+                src="/images/logo.png"
+                alt="logo"
+                width={133}
+                height={44}
+                priority
+              />
+            </Link>
             {/* 桌面端 Navbar */}
             <nav className="items-center hidden md:flex">
               <ul className="flex items-center">
@@ -112,30 +95,18 @@ function Header() {
                     className={clsx(
                       'group relative text-title hover:text-primary font-bold',
                       {
-                        '!text-primary':
-                          pathname === item.href ||
-                          pathname.startsWith(item.prefix as string)
+                        '!text-primary': pathname === item.href
                       }
                     )}
                   >
-                    {item.href ? (
-                      <Link className="px-6 py-[18px] block" href={item.href}>
-                        {item.title}
-                      </Link>
-                    ) : (
-                      <Dropdown menu={{ items: item.items }}>
-                        <p className="px-6 py-[18px] cursor-pointer">
-                          {item.title}
-                        </p>
-                      </Dropdown>
-                    )}
+                    <Link className="px-6 py-[18px] block" href={item.href}>
+                      {item.title}
+                    </Link>
                     <div
                       className={clsx(
                         'absolute left-0 bottom-0 w-full h-2px group-hover:bg-navbar-active bg-transparent',
                         {
-                          '!bg-navbar-active':
-                            pathname === item.href ||
-                            pathname.startsWith(item.prefix as string)
+                          '!bg-navbar-active': pathname === item.href
                         }
                       )}
                     ></div>

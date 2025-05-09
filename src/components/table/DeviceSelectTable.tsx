@@ -5,22 +5,45 @@ import Select from '@/components/Select'
 import type { TableColumnsType } from 'antd'
 import type { TableProps, TablePaginationConfig } from 'antd/es/table'
 import { DataSource } from '@/types/components/table'
+import { Tag } from 'antd'
 
-const dataSource = Array.from({ length: 46 }).map((_, i) => ({
-  key: i,
-  seconds: i,
-  address: `台北市${i}號`
-}))
-const dataKeys = Array.from({ length: 46 }).map((_, i) => i)
+const dataSource = Array.from({ length: 46 }).map((_, i) => {
+  const state = Math.random() > 0.5 ? '符合' : '不符合'
+  return {
+    key: i,
+    device: `設備00${i}`,
+    seconds: i,
+    address: `台北市${i}號`,
+    channel: '東森',
+    state
+  }
+})
+const defaultSelectedKeys = dataSource
+  .filter((item) => item.state === '符合')
+  .map((item) => item.key)
 
 const columns: TableColumnsType<DataSource> = [
+  {
+    title: '狀態',
+    dataIndex: 'state',
+    render: (_, { state }) => (
+      <Tag color={state === '符合' ? 'green' : 'red'}>{state}</Tag>
+    )
+  },
+  { title: '設備名稱', dataIndex: 'device' },
+  { title: '東森', dataIndex: 'channel' },
   { title: '地址', dataIndex: 'address' },
   { title: '剩餘秒數', dataIndex: 'seconds' }
 ]
 
-const DeviceSelectTable = () => {
+type Props = {
+  onNext: () => void
+}
+
+const DeviceSelectTable = ({ onNext }: Props) => {
   const [keyword, setKeyword] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(dataKeys)
+  const [selectedRowKeys, setSelectedRowKeys] =
+    useState<React.Key[]>(defaultSelectedKeys)
   const [isSearch, setIsSearch] = useState(false)
   const [second, setSecond] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
@@ -33,15 +56,13 @@ const DeviceSelectTable = () => {
     setIsSearch(true)
     console.log('搜尋')
   }
-  const handleAdvertise = () => {
+
+  const handleNext = () => {
     // TODO: for eslint
     setPageSize(100)
-    console.log('上刊廣告:')
+    onNext()
   }
-  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
+
   const rowSelection: TableProps<DataSource>['rowSelection'] = {
     selectedRowKeys,
     onChange: (
@@ -148,7 +169,7 @@ const DeviceSelectTable = () => {
             onChange={handleTableChange}
             onPageChange={(page) => setCurrentPage(page)}
           />
-          {selectedRowKeys.length ? (
+          {selectedRowKeys.length !== 0 && (
             <div className="mb-6 flex flex-col md:flex-row">
               <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
                 <span className="mr-3 font-bold">估計花費點數:</span>
@@ -157,14 +178,12 @@ const DeviceSelectTable = () => {
               <div className="flex justify-center flex-1">
                 <Button
                   className="px-20 py-3 rounded-40px font-bold bg-primary"
-                  onClick={handleAdvertise}
+                  onClick={handleNext}
                 >
-                  刊登廣告
+                  下一步
                 </Button>
               </div>
             </div>
-          ) : (
-            ''
           )}
         </div>
       )}

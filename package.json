@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "prettier": "prettier --write ./src",
-    "lint": "ESLINT_USE_FLAT_CONFIG=true next lint && prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=true next lint && prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "commit": "git add . && git-cz",
     "prepare": "husky"
   },
@@ -21,8 +21,6 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.6",
-    "@tanstack/react-query": "^5.62.8",
-    "@tanstack/react-query-devtools": "^5.62.8",
     "@types/google.maps": "^3.58.1",
     "antd": "^5.22.5",
     "axios": "^1.7.9",
@@ -47,6 +45,7 @@
     "@types/react-dom": "^19",
     "commitizen": "^4.3.1",
     "commitlint-config-cz": "^0.13.3",
+    "cross-env": "^7.0.3",
     "cz-customizable": "^7.3.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.1",
