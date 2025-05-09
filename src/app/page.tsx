@@ -18,23 +18,25 @@ function Advertising() {
   const [step, setStep] = useState(1)
   const handleModeChange = (value: string) => {
     setMode(value)
+    console.log(value)
   }
-  const renderDeviceSelect = () => {
+  const renderDeviceSelectOrMap = (isFinish = false, nextStep = 1) => {
     if (mode === '地圖') {
       return (
         <DeviceMap
           onModeChange={handleModeChange}
           mode={mode}
-          onNext={() => setStep(2)}
+          onNext={() => setStep(nextStep)}
+          isFinish={isFinish}
         />
       )
     } else if (mode === '搜尋') {
       return (
         <DeviceSelect
-          isFinish={false}
+          isFinish={isFinish}
           onModeChange={handleModeChange}
           mode={mode}
-          onNext={() => setStep(2)}
+          onNext={() => setStep(nextStep)}
         />
       )
     }
@@ -42,18 +44,11 @@ function Advertising() {
 
   return (
     <>
-      {step === 1 && renderDeviceSelect()}
+      {step === 1 && renderDeviceSelectOrMap(false, 2)}
       {step === 2 && (
         <MaterialSelect onNext={() => setStep(3)} onPrev={() => setStep(1)} />
       )}
-      {step === 3 && (
-        <DeviceSelect
-          isFinish={true}
-          onModeChange={handleModeChange}
-          mode={mode}
-          onNext={() => setStep(1)}
-        />
-      )}
+      {step === 3 && renderDeviceSelectOrMap(true, 1)}
     </>
   )
 }

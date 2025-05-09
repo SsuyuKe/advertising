@@ -41,6 +41,7 @@ type Props = {
   onModeChange: (mode: string) => void
   mode: string
   onNext: () => void
+  isFinish?: boolean
 }
 
 interface DateRange {
