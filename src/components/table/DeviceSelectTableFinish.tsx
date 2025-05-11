@@ -68,12 +68,12 @@ const DeviceSelectTableFinish = () => {
         onPageChange={(page) => setCurrentPage(page)}
       />
       {selectedRowKeys.length !== 0 && (
-        <div className="mb-6 flex flex-col md:flex-row">
+        <div className="mb-6 flex flex-col md:flex-row relative">
           <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
             <span className="mr-3 font-bold">估計花費點數:</span>
             <span className="text-purple-200">300</span>
           </div>
-          <div className="flex justify-center flex-1">
+          <div className="absolute left-1/2 -translate-x-1/2">
             <Button className="px-20 py-3 rounded-40px font-bold bg-primary">
               刊登廣告
             </Button>

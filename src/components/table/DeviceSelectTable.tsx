@@ -13,14 +13,12 @@ type Props = {
 
 const DeviceSelectTable = ({ onNext }: Props) => {
   const [keyword, setKeyword] = useState('')
-  // const [selectedRowKeys, setSelectedRowKeys] =
-  // useState<React.Key[]>(defaultSelectedKeys)
   const [isSearch, setIsSearch] = useState(false)
   const [second, setSecond] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [deviceList, setDeviceList] = useState<DataSource[]>([])
-
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const handleChange = (value: string | number) => {
     console.log(`selected ${value}`)
   }
@@ -28,6 +26,7 @@ const DeviceSelectTable = ({ onNext }: Props) => {
     setIsSearch(true)
     const data = await getDeviceList(keyword)
     setDeviceList(data)
+    setSelectedRowKeys(data.map((item: DataSource) => item.deviceId))
     console.log('搜尋')
   }
 
@@ -36,7 +35,7 @@ const DeviceSelectTable = ({ onNext }: Props) => {
     key: item.deviceId,
     seconds: 0
   }))
-  const defaultSelectedKeys = dataSource.map((item) => item.key)
+  // const defaultSelectedKeys = dataSource.map((item) => item.key)
 
   const columns: TableColumnsType<DataSource> = [
     { title: '設備名稱', dataIndex: 'name' },
@@ -52,16 +51,16 @@ const DeviceSelectTable = ({ onNext }: Props) => {
   }
 
   const rowSelection: TableProps<DataSource>['rowSelection'] = {
-    selectedRowKeys: defaultSelectedKeys,
+    selectedRowKeys,
     onChange: (
       newSelectedRowKeys: React.Key[],
       newSelectedRows: DataSource[]
     ) => {
       console.log('Selected rows:', newSelectedRows)
-      // setSelectedRowKeys(newSelectedRowKeys)
-      console.log('newSelectedRowKeys', newSelectedRowKeys)
+      setSelectedRowKeys(newSelectedRowKeys) // 關鍵：更新選中項目
     }
   }
+
   const handleTableChange = (pagination: TablePaginationConfig) => {
     console.log('Pagination:', pagination)
   }
@@ -152,8 +151,8 @@ const DeviceSelectTable = ({ onNext }: Props) => {
       </div>
       <div className="py-8 flex justify-center">
         <Button
-          className="px-20 py-3 rounded-40px font-bold bg-primary"
-          // disabled={!selectedMaterial}
+          className="px-20 py-3 rounded-40px font-bold bg-primary disabled:bg-disabled"
+          disabled={!keyword}
           onClick={handleSearch}
         >
           搜尋
@@ -171,13 +170,13 @@ const DeviceSelectTable = ({ onNext }: Props) => {
             onChange={handleTableChange}
             onPageChange={(page) => setCurrentPage(page)}
           />
-          {defaultSelectedKeys.length !== 0 && (
-            <div className="mb-6 flex flex-col md:flex-row">
+          {selectedRowKeys.length !== 0 && (
+            <div className="mb-6 flex flex-col md:flex-row relative">
               <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
                 <span className="mr-3 font-bold">估計花費點數:</span>
                 <span className="text-purple-200">300</span>
               </div>
-              <div className="flex justify-center flex-1">
+              <div className="absolute left-1/2 -translate-x-1/2">
                 <Button
                   className="px-20 py-3 rounded-40px font-bold bg-primary"
                   onClick={handleNext}
