@@ -62,6 +62,11 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
     }
   }
 
+  const handleDelete = (id: number) => {
+    onDelete(id)
+    setIsDeleteModalOpen(false)
+  }
+
   const columns: TableColumnsType<DataSource> = [
     { title: '名稱', dataIndex: 'name', key: 'name' },
     { title: '類型', dataIndex: 'type', key: 'type' },
@@ -149,7 +154,7 @@ const MaterialListTable = ({ dataSource, totalPages, onDelete }: Props) => {
       />
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
-        onConfirm={() => onDelete(selectedMaterialId)}
+        onConfirm={() => handleDelete(selectedMaterialId)}
         onCancel={() => setIsDeleteModalOpen(false)}
         onClose={() => setIsDeleteModalOpen(false)}
         message={`是否要刪除 ${selectedMaterialName}？`}
