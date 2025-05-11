@@ -76,7 +76,10 @@ function MaterialSelect({ onPrev, onNext }: Props) {
             btnText="搜尋"
             onConfirm={handleAdvertisingName}
           />
-          <Button className="rounded-xl px-10 py-3 font-bold" onClick={onNext}>
+          <Button
+            className="rounded-xl px-10 py-3 font-bold hidden md:block"
+            onClick={onNext}
+          >
             下一步
           </Button>
         </div>
@@ -150,6 +153,14 @@ function MaterialSelect({ onPrev, onNext }: Props) {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
               />
+              <div className="flex justify-center flex-1 md:hidden">
+                <Button
+                  className="px-20 py-3 rounded-40px font-bold bg-primary"
+                  onClick={onNext}
+                >
+                  下一步
+                </Button>
+              </div>
             </div>
           </>
         )}
