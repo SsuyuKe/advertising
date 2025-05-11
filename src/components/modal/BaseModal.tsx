@@ -15,7 +15,9 @@ const BaseModal = ({ isOpen, onClose, children }: Props) => {
       {/* 背景遮罩 */}
       <div className="absolute inset-0" onClick={onClose}></div>
       {/* Modal 主體 */}
-      <div className="relative z-10">{children}</div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+        {children}
+      </div>
     </div>
   )
 }

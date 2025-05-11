@@ -389,7 +389,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
         </Button>
         {!isSidebarOpen ? (
           <div
-            className="absolute top-[124px] md:top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
+            className="absolute top-[210px] md:top-4 left-4 bg-white rounded-10px w-[50px] h-[50px] border border-solid border-gray-300 flex flex-col gap-6px justify-center items-center cursor-pointer"
             onClick={() => setIsSidebarOpen(true)}
           >
             {Array.from({ length: 3 }, (value, index) => index).map(
@@ -399,7 +399,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
             )}
           </div>
         ) : (
-          <div className="absolute top-[124px] md:top-4 left-4 z-20 bg-white rounded-10px w-[calc(100%-32px)] md:w-[362px]">
+          <div className="absolute top-[210px] md:top-4 left-4 z-20 bg-white rounded-10px w-[calc(100%-32px)] md:w-[362px]">
             <h2 className="flex items-center justify-between px-5 py-3 border-b border-solid border-purple-400">
               <p className="text-xl text-purple-200 font-bold">搜尋關鍵字</p>
               <button
@@ -476,32 +476,46 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
         )}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-2 z-50">
           {/* 搜尋欄 */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-3">
             <div className="flex bg-white shadow-common rounded-10px p-2 gap-2">
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="輸入城市名稱"
-                className="flex-1 text-black rounded-6px w-[254px]"
+                className="flex-1 text-black rounded-6px"
               />
               <Button
                 onClick={() => setIsAdvanced((prev) => !prev)}
-                className="px-4 py-6px rounded-10px text-sm bg-[#1D1D1D80] border-none"
+                className="hidden md:block w-[88px] py-6px rounded-10px text-sm bg-[#1D1D1D80] border-none"
               >
                 進階條件
               </Button>
               <Button
+                onClick={() => setIsAdvanced((prev) => !prev)}
+                className="md:hidden w-[60px] py-6px rounded-10px text-sm bg-[#1D1D1D80] border-none"
+              >
+                進階
+              </Button>
+              <Button
                 onClick={fetchPlaces}
-                className="px-4 py-6px rounded-10px text-sm"
+                className="w-[60px] py-6px rounded-10px text-sm"
               >
                 搜尋
               </Button>
             </div>
-            <DateRangePicker
-              className="map"
-              onChange={handleDateRangeChange}
-              popupClassName="ad-date-picker"
-            />
+            <div className="flex items-center justify-between w-full">
+              <Segmented
+                className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
+                options={iconOptions}
+                value={modeOption}
+                onChange={(val) => handleModeChange(val as string)}
+              />
+              <DateRangePicker
+                className="map"
+                onChange={handleDateRangeChange}
+                popupClassName="ad-date-picker"
+              />
+            </div>
           </div>
           {isAdvanced && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 bg-white py-5 px-4 rounded-xl">
@@ -552,21 +566,15 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
             value={modeOption}
             onChange={(val) => handleModeChange(val as string)}
           />
-          <Segmented
-            className="device-select !bg-purple-100 !text-title font-bold block md:hidden !px-0"
-            options={iconOptions}
-            value={modeOption}
-            onChange={(val) => handleModeChange(val as string)}
-          />
         </div>
         <div className="absolute left-1/2 md:left-auto -translate-x-1/2 md:-translate-x-0 bottom-24 md:right-4 md:bottom-8">
-          {selectedDevices.length !== 0 && (
+          {selectedDevices.length > 0 && (
             <p className="font-bold mb-3 text-right">
               已選擇{' '}
               <span className="text-primary">{selectedDevices.length}</span> 筆
             </p>
           )}
-          {selectedDevices.length !== 0 && (
+          {selectedDevices.length > 0 && (
             <ul className="mb-2 bg-white shadow-common rounded-xl w-80 h-[250px] md:h-[360px] overflow-y-auto">
               {selectedDevices.map((device) => (
                 <li

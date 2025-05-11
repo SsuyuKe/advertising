@@ -190,82 +190,118 @@ function EntrustedManagement() {
         </div>
       </div>
       <BaseModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="flex flex-col md:flex-row w-[362px] md:w-[767px] bg-white shadow-common rounded-[20px] p-1">
-          <div className="w-full md:w-1/2 relative rounded-2xl overflow-hidden">
-            <Image
-              className="w-full h-[300px] md:h-auto object-cover"
-              src="/images/post-image.png"
-              width={379}
-              height={442}
-              alt="post-image"
-            />
-            <div
-              className="absolute bottom-0 left-0 w-full flex items-center justify-between backdrop-blur-8 px-7 py-5 rounded-2xl"
-              style={{
-                background: 'rgba(43, 43, 43, 0.7)'
-              }}
+        <div className="bg-white shadow-common rounded-[20px] p-1 h-[600px] md:h-[550px] overflow-y-auto">
+          <div className="flex justify-end mb-4 md:hidden">
+            <button
+              className="md:hidden block"
+              onClick={() => setIsModalOpen(false)}
             >
-              <div className="text-white font-semibold">
-                <p>訂單編號</p>
-                <p>202107260002</p>
-              </div>
-              <Button className="py-3 px-6 rounded-[54px] flex items-center gap-[10px]">
-                <span className="font-semibold">投放設備</span>
-                <Image
-                  width={16}
-                  height={16}
-                  alt="arrow-right"
-                  src="/icons/arrow-right-white.svg"
-                />
-              </Button>
-            </div>
+              <Image
+                src="/images/close.png"
+                width={28}
+                height={28}
+                alt="close"
+              />
+            </button>
           </div>
-          <div className="w-full md:w-1/2 px-5">
-            <div className="flex flex-col gap-3 border-b border-solid border-purple-100 pb-3 pt-3">
-              <h3 className="text-primary-title font-semibold">廣告活動名稱</h3>
-              <Input
-                value={advertiseName}
-                onChange={(e) => setAdvertiseName(e.target.value)}
-                placeholder="輸入廣告活動名稱"
-                className="p-2 text-black rounded-6px w-full"
+          <div className="flex flex-col md:flex-row w-[362px] md:w-[767px] h-auto">
+            <div className="w-full md:w-1/2 h-full relative rounded-2xl overflow-hidden">
+              <Image
+                className="w-full h-[300px] md:h-[542px] object-cover"
+                src="/images/post-image.png"
+                width={379}
+                height={442}
+                alt="post-image"
               />
+              <div
+                className="absolute bottom-0 left-0 w-full flex items-center justify-between backdrop-blur-8 px-7 py-5 rounded-2xl"
+                style={{
+                  background: 'rgba(43, 43, 43, 0.7)'
+                }}
+              >
+                <div className="text-white font-semibold">
+                  <p>訂單編號</p>
+                  <p>202107260002</p>
+                </div>
+                <Button className="py-3 px-6 rounded-[54px] flex items-center gap-[10px]">
+                  <span className="font-semibold">投放設備</span>
+                  <Image
+                    width={16}
+                    height={16}
+                    alt="arrow-right"
+                    src="/icons/arrow-right-white.svg"
+                  />
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100">
-              <h3 className="text-primary-title font-semibold">時間</h3>
-              <DateRangePicker
-                onChange={handleDateRangeChange}
-                popupClassName="ad-date-picker"
-              />
+            <div className="w-full md:w-1/2 px-5">
+              <div className="flex flex-col gap-3 border-b border-solid border-purple-100 pb-3 pt-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-primary-title font-semibold">
+                    廣告活動名稱
+                  </h3>
+                  <button
+                    className="hidden md:block"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    <Image
+                      src="/images/close.png"
+                      width={28}
+                      height={28}
+                      alt="close"
+                    />
+                  </button>
+                </div>
+                <Input
+                  value={advertiseName}
+                  onChange={(e) => setAdvertiseName(e.target.value)}
+                  placeholder="輸入廣告活動名稱"
+                  className="p-2 text-black rounded-6px w-full"
+                />
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100">
+                <h3 className="text-primary-title font-semibold text-nowrap">
+                  時間
+                </h3>
+                <DateRangePicker
+                  onChange={handleDateRangeChange}
+                  popupClassName="ad-date-picker"
+                />
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
+                <h3>類別</h3>
+                <p>餐飲</p>
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
+                <h3>廣告素材涉及項目</h3>
+                <p>無</p>
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
+                <h3>投放設備數量</h3>
+                <p>22</p>
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
+                <h3>上刊台數</h3>
+                <p>0</p>
+              </div>
+              <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
+                <h3>撥放次數</h3>
+                <p>0</p>
+              </div>
+              <div className="flex items-center gap-3 border-b border-solid border-purple-100 pb-3 pt-3">
+                <h3 className="text-primary-title font-semibold">推薦人</h3>
+                <Input
+                  value={recommendName}
+                  onChange={(e) => setRecommendName(e.target.value)}
+                  placeholder="輸入推薦人"
+                  className="flex-1 p-2 text-black rounded-6px"
+                />
+              </div>
+              <p className="text-placeholder font-medium text-xs py-3">
+                委刊建立後不可修改，如有需取消委刊的需求，或遇到不可抗力因素需要調整檔期，請聯繫{' '}
+                <span className="text-[#ff1e1e]">客服處理</span>
+              </p>
             </div>
-            <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
-              <h3>時間</h3>
-              <p>餐飲</p>
-            </div>
-            <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
-              <h3>廣告素材涉及項目</h3>
-              <p>無</p>
-            </div>
-            <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
-              <h3>投放設備數量</h3>
-              <p>22</p>
-            </div>
-            <div className="flex items-center gap-3 py-3 border-b border-solid border-purple-100 text-primary-title font-semibold">
-              <h3>上刊台數</h3>
-              <p>0</p>
-            </div>
-            <div className="flex items-center gap-3 border-b border-solid border-purple-100 pb-3 pt-3">
-              <h3 className="text-primary-title font-semibold">推薦人</h3>
-              <Input
-                value={recommendName}
-                onChange={(e) => setRecommendName(e.target.value)}
-                placeholder="輸入推薦人"
-                className="flex-1 p-2 text-black rounded-6px"
-              />
-            </div>
-            <p className="text-placeholder font-medium text-xs py-3">
-              委刊建立後不可修改，如有需取消委刊的需求，或遇到不可抗力因素需要調整檔期，請聯繫{' '}
-              <span className="text-[#ff1e1e]">客服處理</span>
-            </p>
           </div>
         </div>
       </BaseModal>

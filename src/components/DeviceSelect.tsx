@@ -5,6 +5,7 @@ import type { RangePickerProps } from 'antd/es/date-picker'
 import { format } from 'date-fns'
 import DeviceSelectTable from '@/components/table/DeviceSelectTable'
 import DeviceSelectTableFinish from './table/DeviceSelectTableFinish'
+import SearchBar from './SearchBar'
 
 const options = ['搜尋', '地圖']
 type Props = {
@@ -83,6 +84,7 @@ const DeviceSelect = ({ onModeChange, mode, onNext, isFinish }: Props) => {
   return (
     <div className="container pt-4">
       <div className="flex flex-col">
+        <SearchBar className="mb-5 text-purple-200">設備篩選</SearchBar>
         <div className="flex justify-between items-center !mb-7">
           <DateRangePicker
             onChange={handleDateRangeChange}

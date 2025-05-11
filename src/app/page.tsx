@@ -20,6 +20,10 @@ function Advertising() {
     setMode(value)
     console.log(value)
   }
+  const handleFinish = () => {
+    setStep(3)
+    setMode('搜尋')
+  }
   const renderDeviceSelectOrMap = (isFinish = false, nextStep = 1) => {
     if (mode === '地圖') {
       return (
@@ -46,7 +50,7 @@ function Advertising() {
     <>
       {step === 1 && renderDeviceSelectOrMap(false, 2)}
       {step === 2 && (
-        <MaterialSelect onNext={() => setStep(3)} onPrev={() => setStep(1)} />
+        <MaterialSelect onNext={handleFinish} onPrev={() => setStep(1)} />
       )}
       {step === 3 && renderDeviceSelectOrMap(true, 1)}
     </>

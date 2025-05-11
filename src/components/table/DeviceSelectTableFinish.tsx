@@ -74,11 +74,8 @@ const DeviceSelectTableFinish = () => {
             <span className="text-purple-200">300</span>
           </div>
           <div className="flex justify-center flex-1">
-            <Button
-              className="px-20 py-3 rounded-40px font-bold bg-primary"
-              // onClick={handleNext}
-            >
-              下一步
+            <Button className="px-20 py-3 rounded-40px font-bold bg-primary">
+              刊登廣告
             </Button>
           </div>
         </div>
