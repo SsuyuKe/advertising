@@ -5,24 +5,7 @@ import Select from '@/components/Select'
 import type { TableColumnsType } from 'antd'
 import type { TableProps, TablePaginationConfig } from 'antd/es/table'
 import { DataSource } from '@/types/components/table'
-
-const dataSource = Array.from({ length: 46 }).map((_, i) => {
-  return {
-    key: i,
-    device: `設備00${i}`,
-    seconds: i,
-    address: `台北市${i}號`,
-    channel: '東森'
-  }
-})
-const defaultSelectedKeys = dataSource.map((item) => item.key)
-
-const columns: TableColumnsType<DataSource> = [
-  { title: '設備名稱', dataIndex: 'device' },
-  { title: '東森', dataIndex: 'channel' },
-  { title: '地址', dataIndex: 'address' },
-  { title: '剩餘秒數', dataIndex: 'seconds' }
-]
+import { getDeviceList } from '@/api/module/device'
 
 type Props = {
   onNext: () => void
@@ -30,20 +13,37 @@ type Props = {
 
 const DeviceSelectTable = ({ onNext }: Props) => {
   const [keyword, setKeyword] = useState('')
-  const [selectedRowKeys, setSelectedRowKeys] =
-    useState<React.Key[]>(defaultSelectedKeys)
+  // const [selectedRowKeys, setSelectedRowKeys] =
+  // useState<React.Key[]>(defaultSelectedKeys)
   const [isSearch, setIsSearch] = useState(false)
   const [second, setSecond] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [deviceList, setDeviceList] = useState<DataSource[]>([])
 
   const handleChange = (value: string | number) => {
     console.log(`selected ${value}`)
   }
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setIsSearch(true)
+    const data = await getDeviceList(keyword)
+    setDeviceList(data)
     console.log('搜尋')
   }
+
+  const dataSource = deviceList.map((item) => ({
+    ...item,
+    key: item.deviceId,
+    seconds: 0
+  }))
+  const defaultSelectedKeys = dataSource.map((item) => item.key)
+
+  const columns: TableColumnsType<DataSource> = [
+    { title: '設備名稱', dataIndex: 'name' },
+    { title: '媒體通路', dataIndex: 'companyName' },
+    { title: '地址', dataIndex: 'address' },
+    { title: '剩餘秒數', dataIndex: 'seconds' }
+  ]
 
   const handleNext = () => {
     // TODO: for eslint
@@ -52,13 +52,13 @@ const DeviceSelectTable = ({ onNext }: Props) => {
   }
 
   const rowSelection: TableProps<DataSource>['rowSelection'] = {
-    selectedRowKeys,
+    selectedRowKeys: defaultSelectedKeys,
     onChange: (
       newSelectedRowKeys: React.Key[],
       newSelectedRows: DataSource[]
     ) => {
       console.log('Selected rows:', newSelectedRows)
-      setSelectedRowKeys(newSelectedRowKeys)
+      // setSelectedRowKeys(newSelectedRowKeys)
       console.log('newSelectedRowKeys', newSelectedRowKeys)
     }
   }
@@ -79,7 +79,7 @@ const DeviceSelectTable = ({ onNext }: Props) => {
                 value={keyword}
                 className="w-full md:w-auto"
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="請輸入道路名稱"
+                placeholder="請輸入關鍵字"
               />
             </div>
             <div>
@@ -171,7 +171,7 @@ const DeviceSelectTable = ({ onNext }: Props) => {
             onChange={handleTableChange}
             onPageChange={(page) => setCurrentPage(page)}
           />
-          {selectedRowKeys.length !== 0 && (
+          {defaultSelectedKeys.length !== 0 && (
             <div className="mb-6 flex flex-col md:flex-row">
               <div className="flex items-center py-4 px-5 bg-white shadow-common rounded-xl text-lg mb-5 md:mb-0">
                 <span className="mr-3 font-bold">估計花費點數:</span>

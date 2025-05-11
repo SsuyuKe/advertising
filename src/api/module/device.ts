@@ -32,3 +32,16 @@ export const getPointList = async () => {
   })
   return data
 }
+
+export const getDeviceList = async (SearchWord: string) => {
+  const AccessToken = getToken()
+  const { data } = await server.get('/api/Device/List', {
+    params: {
+      AccessToken,
+      SearchWord,
+      PageNumber: 1,
+      DataCount: 10
+    }
+  })
+  return data
+}
