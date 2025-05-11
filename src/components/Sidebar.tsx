@@ -31,16 +31,12 @@ const Sidebar = ({ open, className, onClose }: Props) => {
   }
   const MENU_CONFIG: MenuItem[] = [
     {
-      title: '首頁',
+      title: '上刊廣告',
       href: '/'
     },
     {
-      title: '上刊廣告',
-      href: '/device-advertising/advertising'
-    },
-    {
       title: '委刊列表',
-      href: '/device-advertising/entrusted-management'
+      href: '/entrusted-management'
     },
     {
       title: '素材管理',

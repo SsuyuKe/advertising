@@ -64,10 +64,8 @@ function PointsManagement() {
                     />
                     <p>
                       您目前共擁有<span className="text-danger px-1">180</span>
+                      點 累積贈送點數<span className="text-danger px-1">0</span>
                       點
-                    </p>
-                    <p>
-                      累積贈送點數<span className="text-danger px-1">0</span>點
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">
