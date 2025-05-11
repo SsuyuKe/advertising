@@ -5,31 +5,25 @@ import Tag from '@/components/Tag'
 import type { TableColumnsType } from 'antd'
 import { DataSource } from '@/types/components/table'
 import { format } from 'date-fns'
+import { getPointList } from '@/api/module/device'
 
 const PAGE_SIZE = 10
 
 function PointRecordTable() {
   const [currentPage, setCurrentPage] = useState(1)
+  const [pointList, setPointList] = useState<DataSource[]>([])
 
-  // const getStatusColor = (status: 'Approve' | 'Apply' | 'Reject') => {
-  //   switch (status) {
-  //     case 'Approve':
-  //       return 'success'
-  //     case 'Apply':
-  //       return 'warning'
-  //     case 'Reject':
-  //       return 'danger'
-  //     default:
-  //       return undefined
-  //   }
-  // }
+  const getList = async () => {
+    const data = await getPointList()
+    setPointList(data)
+  }
 
   const columns: TableColumnsType<DataSource> = [
-    { title: '交易序號', dataIndex: 'id', key: 'id' },
-    { title: '付款方式', dataIndex: 'payment', key: 'payment' },
+    { title: '交易序號', dataIndex: 'accountId', key: 'accountId' },
+    { title: '付款方式', dataIndex: 'payMethod', key: 'payMethod' },
     { title: '點數類型', dataIndex: 'type', key: 'type' },
-    { title: '儲值點數', dataIndex: 'chargePoint', key: 'chargePoint' },
-    { title: '剩餘點數', dataIndex: 'remainPoint', key: 'remainPoint' },
+    { title: '儲值點數', dataIndex: 'pointDeposit', key: 'pointDeposit' },
+    { title: '剩餘點數', dataIndex: 'pointRemain', key: 'pointRemain' },
     {
       title: '使用期限',
       dataIndex: 'expirationDate',
@@ -39,46 +33,29 @@ function PointRecordTable() {
     },
     {
       title: '儲值日期',
-      dataIndex: 'applyDate',
-      key: 'applyDate',
+      dataIndex: 'depositDate',
+      key: 'depositDate',
       render: (_: unknown, record: DataSource) =>
-        format(new Date(record.applyDate), 'yyyy-MM-dd')
+        format(new Date(record.depositDate), 'yyyy-MM-dd')
     },
     {
       title: '狀態',
       dataIndex: 'status',
       key: 'status',
-      render: () => (
-        <Tag
-          className="!text-sm"
-          // type={getStatusColor(record.status as MaterialType)}
-          type="success"
-        >
-          付款完成
-          {/* {record.status === 'Approve'
-            ? '已上刊'
-            : record.status === 'Reject'
-              ? '已逾期'
-              : '準備中'} */}
+      render: (_: unknown, record: DataSource) => (
+        <Tag className="!text-sm" type="success">
+          {record.status}
         </Tag>
       )
     },
     { title: '備註', dataIndex: 'remark', key: 'remark' }
   ]
-  const dataSource = Array.from({ length: 30 }, (value, index) => index).map(
-    (_, index) => ({
-      id: index + 1,
-      payment: '線下給點',
-      type: '購買',
-      chargePoint: 120,
-      remainPoint: 10,
-      expirationDate: '2023-12-06T00:00:00',
-      applyDate: '2023-12-06T00:00:00',
-      remark: '-'
-    })
-  )
-  const data = dataSource.map((item) => ({ ...item, key: item.id }))
 
+  const data = pointList.map((item) => ({ ...item, key: item.accountId }))
+
+  useEffect(() => {
+    getList()
+  }, [])
   return (
     <Table
       columns={columns}
