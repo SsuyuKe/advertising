@@ -29,7 +29,7 @@ const columns: TableColumnsType<DataSource> = [
     )
   },
   { title: '設備名稱', dataIndex: 'device' },
-  { title: '東森', dataIndex: 'channel' },
+  { title: '媒體通路', dataIndex: 'channel' },
   { title: '地址', dataIndex: 'address' },
   { title: '剩餘秒數', dataIndex: 'seconds' }
 ]

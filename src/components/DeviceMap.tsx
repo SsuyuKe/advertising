@@ -1,6 +1,6 @@
 'use client'
 import { format } from 'date-fns'
-import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api'
+import { GoogleMap, MarkerF } from '@react-google-maps/api'
 import Image from 'next/image'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
@@ -231,6 +231,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
       })
     }
   }
+  console.log(allDevices)
 
   if (!isLoaded) return <Loading size="large" />
 
@@ -270,116 +271,134 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
             />
           )}
           {/* 搜索結果標記 */}
-          {allDevices.map((device) => (
-            <MarkerF
-              key={device.deviceId}
-              position={{
-                lat: device.lat,
-                lng: device.lng
-              }}
-              icon={createIcon('/icons/place-area-pin.svg')}
-              onClick={() => setSelectedDevice(device)}
-            />
-          ))}
-          {selectedDevice && (
-            <InfoWindow
-              position={{
-                lat: selectedDevice.lat,
-                lng: selectedDevice.lng
-              }}
-              options={{
-                pixelOffset: new window.google.maps.Size(0, -40),
-                disableAutoPan: true
-              }}
-              onCloseClick={() => setSelectedDevice(null)}
-            >
-              <div className="flex flex-col items-center justify-center text-base">
-                <div className="flex items-center w-full pb-2">
-                  <Image
-                    width={16}
-                    height={16}
-                    className="object-contain mr-2"
-                    src="/icons/location.svg"
-                    alt="location"
-                  />
-                  <h3 className="text-purple-200 font-bold">
-                    設備名稱：{selectedDevice.name}
-                  </h3>
-                </div>
-                <Image
-                  width={241}
-                  height={153}
-                  className="w-full h-[153px] object-contain rounded-[10px]"
-                  src="/images/device.png"
-                  alt="device"
+          {allDevices.map((device) => {
+            const isSelected = selectedDevices.some(
+              (item) => item.deviceId === device.deviceId
+            )
+            if (isSelected) {
+              return (
+                <MarkerF
+                  key={device.deviceId}
+                  position={{
+                    lat: device.lat,
+                    lng: device.lng
+                  }}
+                  icon={createIcon('/icons/place-area-pin-active.svg')}
+                  onClick={() => setSelectedDevice(device)}
                 />
-                <ul className="flex flex-col w-full font-bold">
-                  <li className="py-2 border-b border-solid border-gray-400 flex items-center gap-2">
-                    螢幕等級:
-                    <div className="flex">
-                      {Array.from({ length: 5 }, (_, idx) => idx + 1).map(
-                        (item) => (
-                          <Image
-                            key={item}
-                            width={20}
-                            height={20}
-                            src="/icons/star.svg"
-                            alt="star"
-                          />
-                        )
-                      )}
-                    </div>
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    地址: {selectedDevice.address}
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    媒體通路: {selectedDevice.address}
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    尺寸: 100
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    解析度: {selectedDevice.resolutionW}x
-                    {selectedDevice.resolutionH}
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    比例: 16:9
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    安裝年分: 2025
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    商圈: 信義商圈
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    室內/室外: 室內
-                  </li>
-                  <li className="py-2 border-b border-solid border-gray-400">
-                    人流分析: 兒童/青少年/上班族
-                  </li>
-                  <li className="py-2 flex flex-col">
-                    <p>設備位置:</p>
-                    <p>距離主幹道2公里</p>
-                    <p>距離捷運站0.5公里</p>
-                    <p>距離大型商場6公里</p>
-                  </li>
-                </ul>
-                <button
-                  onClick={() => handleDeviceClick(selectedDevice)}
-                  className="relative bg-dark text-white py-1 px-60px rounded-10px font-bold"
-                >
-                  {/* 取消要改，有選才是出現取消，沒選就是選擇 */}
-                  {selectedDevices.some(
-                    (item) => item.deviceId === selectedDevice.deviceId
-                  )
-                    ? '取消'
-                    : '選擇'}
-                </button>
-              </div>
-            </InfoWindow>
-          )}
+              )
+            } else {
+              return (
+                <MarkerF
+                  key={device.deviceId}
+                  position={{
+                    lat: device.lat,
+                    lng: device.lng
+                  }}
+                  icon={createIcon('/icons/place-area-pin.svg')}
+                  onClick={() => setSelectedDevice(device)}
+                />
+              )
+            }
+          })}
         </GoogleMap>
+        {selectedDevice && (
+          <div className="flex flex-col text-base absolute left-1/2 md:left-4 -translate-x-1/2 md:-translate-x-0 top-[210px] md:top-[82px] bg-white rounded-[10px] h-[420px] md:h-[500px] overflow-y-auto p-3 w-[240px] no-scrollbar">
+            <div className="flex justify-between items-center w-full pb-2">
+              <div className="flex items-center">
+                <Image
+                  width={16}
+                  height={16}
+                  className="object-contain mr-2"
+                  src="/icons/location.svg"
+                  alt="location"
+                />
+                <h3 className="text-purple-200 font-bold">
+                  設備名稱：{selectedDevice.name}
+                </h3>
+              </div>
+              <button onClick={() => setSelectedDevice(null)}>
+                <Image
+                  width={24}
+                  height={24}
+                  className="object-contain w-6 h-6 mr-2"
+                  src="/icons/close-btn.svg"
+                  alt="location"
+                />
+              </button>
+            </div>
+            <Image
+              width={241}
+              height={153}
+              className="w-full h-[153px] object-contain rounded-[10px]"
+              src="/images/device.png"
+              alt="device"
+            />
+            <ul className="flex flex-col w-full font-bold">
+              <li className="py-2 border-b border-solid border-gray-400 flex items-center gap-2">
+                螢幕等級:
+                <div className="flex">
+                  {Array.from({ length: 5 }, (_, idx) => idx + 1).map(
+                    (item) => (
+                      <Image
+                        key={item}
+                        width={20}
+                        height={20}
+                        src="/icons/star.svg"
+                        alt="star"
+                      />
+                    )
+                  )}
+                </div>
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                地址: {selectedDevice.address}
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                媒體通路: {selectedDevice.address}
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                尺寸: 100
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                解析度: {selectedDevice.resolutionW}x
+                {selectedDevice.resolutionH}
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                比例: 16:9
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                安裝年分: 2025
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                商圈: 信義商圈
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                室內/室外: 室內
+              </li>
+              <li className="py-2 border-b border-solid border-gray-400">
+                人流分析: 兒童/青少年/上班族
+              </li>
+              <li className="py-2 flex flex-col">
+                <p>設備位置:</p>
+                <p>距離主幹道2公里</p>
+                <p>距離捷運站0.5公里</p>
+                <p>距離大型商場6公里</p>
+              </li>
+            </ul>
+            <button
+              onClick={() => handleDeviceClick(selectedDevice)}
+              className="relative bg-dark text-white py-1 px-60px rounded-10px font-bold"
+            >
+              {/* 取消要改，有選才是出現取消，沒選就是選擇 */}
+              {selectedDevices.some(
+                (item) => item.deviceId === selectedDevice.deviceId
+              )
+                ? '取消'
+                : '選擇'}
+            </button>
+          </div>
+        )}
         <Button
           className="py-4 px-20 absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 rounded-40px whitespace-nowrap"
           disabled={!selectedDevices.length}
@@ -464,10 +483,8 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
                       </button>
                     </li>
                   ))}
-                  {!allPlaces.length ? (
+                  {allPlaces.length > 0 && (
                     <li className="px-5 py-4 text-center">沒有任何搜尋結果</li>
-                  ) : (
-                    ''
                   )}
                 </ul>
               </InfiniteScroll>
@@ -569,13 +586,13 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
         </div>
         <div className="absolute left-1/2 md:left-auto -translate-x-1/2 md:-translate-x-0 bottom-24 md:right-4 md:bottom-8">
           {selectedDevices.length > 0 && (
-            <p className="font-bold mb-3 text-right">
+            <p className="font-bold mb-3 text-right hidden md:block">
               已選擇{' '}
               <span className="text-primary">{selectedDevices.length}</span> 筆
             </p>
           )}
           {selectedDevices.length > 0 && (
-            <ul className="mb-2 bg-white shadow-common rounded-xl w-80 h-[250px] md:h-[360px] overflow-y-auto">
+            <ul className="hidden md:block mb-2 bg-white shadow-common rounded-xl w-80 h-[250px] md:h-[360px] overflow-y-auto">
               {selectedDevices.map((device) => (
                 <li
                   key={device.deviceId}
