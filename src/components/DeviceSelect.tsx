@@ -80,7 +80,7 @@ const DeviceSelect = ({
     <div className="container pt-4">
       <div className="flex flex-col">
         <SearchBar showPrev onPrev={onPrev} className="mb-5 text-purple-200">
-          設備篩選
+          {isFinish ? '設備確認' : '設備篩選'}
         </SearchBar>
         <div className="flex justify-between items-center !mb-7">
           <DateRangePicker
