@@ -10,8 +10,6 @@ import type { MenuProps } from 'antd'
 import { useUserStore } from '@/store/user'
 import Sidebar from '@/components/Sidebar'
 
-// TODO: navbar dropdown 選項的 hover狀態顏色要佔滿整行
-
 type MenuItem = {
   title: string
   href: string

@@ -108,10 +108,10 @@ function Login() {
       <div className="w-full md:w-[400px] p-8 bg-white rounded-20px shadow-common">
         <div className="flex justify-center mb-6">
           <Image
-            width={65}
-            height={60}
+            width={80}
+            height={70}
             className="object-contain"
-            src="/images/brand.png"
+            src="/images/logo.png"
             alt="Brand"
           />
         </div>

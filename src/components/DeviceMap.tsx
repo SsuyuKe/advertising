@@ -1,5 +1,4 @@
 'use client'
-import { format } from 'date-fns'
 import { GoogleMap, MarkerF } from '@react-google-maps/api'
 import Image from 'next/image'
 import Input from '@/components/Input'
@@ -14,7 +13,8 @@ import DateRangePicker from '@/components/DateRangePicker'
 import Segmented from '@/components/Segmented'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import { DeviceItem } from '@/types/api/device'
-
+import dayjs from 'dayjs'
+import { format, addDays, startOfToday } from 'date-fns'
 import {
   useMap,
   defaultCenter,
@@ -44,24 +44,23 @@ type Props = {
   isFinish?: boolean
 }
 
-interface DateRange {
-  startDate: Date | null
-  endDate: Date | null
-}
 const options = ['搜尋', '地圖']
 // 將 API 載入邏輯移到組件外部
 const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
   const [center, setCenter] = useState<google.maps.places.PlaceResult | null>(
     null
   )
+  const defaultStart = startOfToday()
+  const defaultEnd = addDays(defaultStart, 7)
+
+  const [dateRange, setDateRange] = useState<RangePickerProps['value']>([
+    dayjs(defaultStart),
+    dayjs(defaultEnd)
+  ])
   const [isAdvanced, setIsAdvanced] = useState(false)
 
   const [modeOption, setModeOption] = useState(mode)
   // const [selectedMaterial, setSelectedMaterial] = useState<number | string>('')
-  const [dateRange, setDateRange] = useState<DateRange>({
-    startDate: null,
-    endDate: null
-  })
 
   const debouncedFetchRef = useRef<
     ((place: google.maps.places.PlaceResult) => void) | null
@@ -212,26 +211,14 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
   }
 
   const handleDateRangeChange = (dates: RangePickerProps['value']) => {
+    setDateRange(dates)
     if (dates && dates[0] && dates[1]) {
-      // 將 Moment 物件轉換為 Date 物件
       const startDate = dates[0].toDate()
       const endDate = dates[1].toDate()
-      setDateRange({
-        startDate,
-        endDate
-      })
-      // 這裡可以加入你的業務邏輯
       console.log('開始日期:', format(startDate, 'yyyy-MM-dd'))
       console.log('結束日期:', format(endDate, 'yyyy-MM-dd'))
-    } else {
-      // 當使用者清除日期選擇時
-      setDateRange({
-        startDate: null,
-        endDate: null
-      })
     }
   }
-  console.log(allDevices)
 
   if (!isLoaded) return <Loading size="large" />
 
@@ -275,6 +262,20 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
             const isSelected = selectedDevices.some(
               (item) => item.deviceId === device.deviceId
             )
+            const isSelectDevice = device.deviceId === selectedDevice?.deviceId
+            if (isSelectDevice) {
+              return (
+                <MarkerF
+                  key={device.deviceId}
+                  position={{
+                    lat: device.lat,
+                    lng: device.lng
+                  }}
+                  icon={createIcon('/icons/place-area-pin-select.svg')}
+                  onClick={() => setSelectedDevice(device)}
+                />
+              )
+            }
             if (isSelected) {
               return (
                 <MarkerF
@@ -498,7 +499,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="輸入城市名稱"
+                placeholder="輸入投放區域"
                 className="flex-1 text-black rounded-6px"
               />
               <Button
@@ -529,6 +530,7 @@ const DeviceMap = ({ onModeChange, mode, onNext }: Props) => {
               />
               <DateRangePicker
                 className="map"
+                value={dateRange}
                 onChange={handleDateRangeChange}
                 popupClassName="ad-date-picker"
               />

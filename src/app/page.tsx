@@ -41,6 +41,7 @@ function Advertising() {
           onModeChange={handleModeChange}
           mode={mode}
           onNext={() => setStep(nextStep)}
+          onPrev={() => setStep(2)}
         />
       )
     }

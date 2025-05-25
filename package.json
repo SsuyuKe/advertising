@@ -26,6 +26,7 @@
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "next": "^15.2.0",
     "react": "^19.0.0",
     "react-advanced-cropper": "^0.20.0",

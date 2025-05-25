@@ -1,34 +1,34 @@
 import clsx from 'clsx'
 import { DatePicker, ConfigProvider } from 'antd'
-import { isBefore, endOfDay } from 'date-fns'
+import { endOfDay, isBefore } from 'date-fns'
 import type { RangePickerProps } from 'antd/es/date-picker'
 
 interface Props {
   className?: string
   popupClassName?: string
   onChange?: (value: RangePickerProps['value']) => void
+  value?: RangePickerProps['value']
 }
 
 const { RangePicker } = DatePicker
 
 const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-  // 获取当前日期的结束时间
   const todayEnd = endOfDay(new Date())
-  // 如果 current 早于今天，则禁用
   return current && isBefore(current.toDate(), todayEnd)
 }
 
 const DateRangePicker: React.FC<Props> = ({
   className,
   popupClassName,
-  onChange
+  onChange,
+  value
 }) => {
   return (
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#5627D2', // 修改主色
-          colorBgContainer: '#fff' // 修改背景色
+          colorPrimary: '#5627D2',
+          colorBgContainer: '#fff'
         }
       }}
     >
@@ -38,11 +38,12 @@ const DateRangePicker: React.FC<Props> = ({
         placeholder={['開始日期', '結束日期']}
         disabledDate={disabledDate}
         onChange={onChange}
+        value={value}
         placement="bottomLeft"
         getPopupContainer={(triggerNode) =>
           triggerNode.parentElement || document.body
-        } // 防止浮层溢出
-        inputReadOnly={window.innerWidth < 768} // 移动端禁用键盘输入
+        }
+        inputReadOnly={window.innerWidth < 768}
       />
     </ConfigProvider>
   )
